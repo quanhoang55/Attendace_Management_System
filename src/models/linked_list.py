@@ -1,20 +1,16 @@
 #==========================================================================
 # IMPORTS & CONFIGURATION
 #==========================================================================
+from dataclasses import dataclass
+from typing import Any, Optional
 
 #==========================================================================
 # CLASSES / DATA STRUCTURE: NODE
 #==========================================================================
+@dataclass
 class Node:
-    def __init__(self, data, next=None):
-        """Node For Linked-List
-
-        Args:
-            data (Any): _description_
-            next (Node, optional): The pointer point to next Node. Defaults to None.
-        """        
-        self.data = data
-        self.next = next
+    data: Any
+    next: Optional["Node"] = None
 
 #==========================================================================
 # CLASSES / DATA STRUCTURE: LinkedList

@@ -5,10 +5,9 @@ from enum import IntEnum
 from dataclasses import dataclass
 from typing import Optional
 #==========================================================================
-# CLASSES / DATA STRUCTURE: Weekday-List, Period-List, Room-List
+# CLASSES / DATA STRUCTURE: Weekday, Period, Room
 #==========================================================================
-
-class WeekdayList(IntEnum):
+class Weekday(IntEnum):
     MODAY = 1
     TUESDAY = 2
     WEDNESDAY = 3
@@ -17,6 +16,13 @@ class WeekdayList(IntEnum):
     SATURDAY = 6
     SUNDAY = 7
 
+class Period(IntEnum):
+    WEEK1 = 1
+    WEEK2 = 2
+    WEEK3 = 3
+    WEEK4 = 4
+    WEEK5 = 5
+
 class Room(IntEnum):
     NO1 = 1
     NO2 = 2
@@ -24,14 +30,11 @@ class Room(IntEnum):
     NO4 = 4
     NO5 = 5
 
-# Uncertain, Change it Later
-# period_list = []
-
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Schedule
 #==========================================================================
 @dataclass
 class Schedule:
-    weekday: WeekdayList
-    period: int
+    weekday: Weekday
+    period: Period
     room: Room
