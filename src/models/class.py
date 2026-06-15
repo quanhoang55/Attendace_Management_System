@@ -1,7 +1,14 @@
+#==========================================================================
+# IMPORTS & CONFIGURATION
+#==========================================================================
 import uuid
 
+#==========================================================================
+# CLASSES / DATA STRUCTURE: Class
+#==========================================================================
+
 class Class:    
-    def __init__(self, class_name: str, students, schedules, next):
+    def __init__(self, class_name: str, students, schedule, next):
         """Class Object
 
         Args:
@@ -13,5 +20,5 @@ class Class:
         """        
         self.class_id = str(uuid.uuid4())
         self.students = students
-        self.schedules = schedules
+        self.schedule = schedule
         self.next = next

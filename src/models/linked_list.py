@@ -1,10 +1,31 @@
+#==========================================================================
+# IMPORTS & CONFIGURATION
+#==========================================================================
+
+#==========================================================================
+# CLASSES / DATA STRUCTURE: NODE
+#==========================================================================
 class Node:
     def __init__(self, data, next=None):
+        """Node For Linked-List
+
+        Args:
+            data (Any): _description_
+            next (Node, optional): The pointer point to next Node. Defaults to None.
+        """        
         self.data = data
         self.next = next
 
+#==========================================================================
+# CLASSES / DATA STRUCTURE: LinkedList
+#==========================================================================
 class LinkedList:
     def __init__(self, head: Node = None):
+        """Init Linked-List
+
+        Args:
+            head (Node, optional): The Beginning of this Linked-List. Defaults to None.
+        """        
         self.head = head
 
     def appendFirst(self, value):
