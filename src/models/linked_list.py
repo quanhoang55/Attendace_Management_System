@@ -17,7 +17,7 @@ class Node:
 #==========================================================================
 @dataclass
 class LinkedList:   
-    head: Node
+    head: Optional[Node] = None
 
     def appendFirst(self, value):
         """Adds a new node to the beginning of the list.
@@ -26,6 +26,9 @@ class LinkedList:
             value (Node): Node we want to add
         """        
         # check is this head None or Not
+        if self.head is None:
+            self.head = Node(value)
+            return
         new_node = Node(value)
         new_node.next = self.head
         self.head = new_node
@@ -66,7 +69,7 @@ class LinkedList:
                 return
             tmp = tmp.next
 
-    def search(self, value) -> bool:
+    def search(self, value) -> Optional[Node]:
         """Returns Node if the value exists in the list, otherwise None.
 
         Args:
@@ -81,3 +84,12 @@ class LinkedList:
                 return tmp
             tmp = tmp.next
         return None
+    def swap(self, value_1: Any, value_2: Any):
+
+        node_1 = self.search(value_1)
+        node_2 = self.search(value_2)
+
+        if node_1 is not None and node_2 is not None:
+            tmp = node_1.data
+            node_1.data = node_2.data
+            node_2.data = tmp
