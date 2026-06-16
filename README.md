@@ -93,32 +93,28 @@ Nguy cơ cấm thi
 - `Student`
   - `student_id`
   - `full_name`
-  - `next`
 
-- `ClassRoom`
+- `Class`
   - `class_id`
   - `class_name`
   - `students`
   - `schedules`
-  - `next`
 
 - `Schedule`
   - `weekday`
   - `period`
   - `room`
-  - `next`
 
 - `AttendanceRecord`
   - `class_id`
   - `date`
   - `student_id`
   - `status`
-  - `next`
 
 - `LinkedList`
   - `head`
   - `append()`
-  - `find()`
+  - `search()`
   - `traverse()`
   - `remove()` nếu cần
 
