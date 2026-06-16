@@ -33,7 +33,7 @@ class Room(IntEnum):
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Schedule
 #==========================================================================
-@dataclass
+@dataclass(frozen=True)
 class Schedule:
     weekday: Weekday
     period: Period
