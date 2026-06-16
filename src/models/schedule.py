@@ -3,12 +3,11 @@
 #==========================================================================
 from enum import IntEnum
 from dataclasses import dataclass
-from typing import Optional
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Weekday, Period, Room
 #==========================================================================
 class Weekday(IntEnum):
-    MODAY = 1
+    MONDAY = 1
     TUESDAY = 2
     WEDNESDAY = 3
     THURSDAY = 4

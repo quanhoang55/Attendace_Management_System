@@ -1,18 +1,14 @@
 #==========================================================================
 # IMPORTS & CONFIGURATION
 #==========================================================================
-import uuid
-from dataclasses import dataclass, field
-from models.student import Student
-from models.schedule import Schedule, Room
+from dataclasses import dataclass
+from models.class_record import Class
+from models.linked_list import Node, LinkedList
 
 #==========================================================================
-# CLASSES / DATA STRUCTURE: Class
+# CLASSES / DATA STRUCTURE: StudentList
 #==========================================================================
-
-@dataclass()
-class Class:    
-    class_id: str =  field(default_factory=lambda: str(uuid.uuid4()))
-    class_name: str
-    students: Student
-    schedule: Schedule
+@dataclass
+# Inheriting from Linked-List
+class ClassList(LinkedList):
+    pass

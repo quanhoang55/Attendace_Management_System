@@ -3,9 +3,9 @@
 #==========================================================================
 from dataclasses import dataclass, field
 import uuid
-from enum import IntEnum, Enum
+from enum import Enum
 from models.schedule import Schedule
-from models.student import Student
+from models.student import Student, Student_ID
 
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Status
@@ -23,5 +23,5 @@ class Status(Enum):
 class AttendanceRecord:
     class_id: str = field(default_factory=lambda: str(uuid.uuid4()))
     date: Schedule
-    student_id: str = Student.student_id
+    student_id: Student_ID
     status: Status
