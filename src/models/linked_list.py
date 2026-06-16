@@ -15,14 +15,9 @@ class Node:
 #==========================================================================
 # CLASSES / DATA STRUCTURE: LinkedList
 #==========================================================================
-class LinkedList:
-    def __init__(self, head: Node = None):
-        """Init Linked-List
-
-        Args:
-            head (Node, optional): The Beginning of this Linked-List. Defaults to None.
-        """        
-        self.head = head
+@dataclass
+class LinkedList:   
+    head: Node
 
     def appendFirst(self, value):
         """Adds a new node to the beginning of the list.

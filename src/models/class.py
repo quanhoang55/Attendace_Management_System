@@ -2,23 +2,16 @@
 # IMPORTS & CONFIGURATION
 #==========================================================================
 import uuid
+from dataclasses import dataclass, field
+from models.student import Student
+from models.schedule import Schedule
 
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Class
 #==========================================================================
 
+@dataclass
 class Class:    
-    def __init__(self, class_name: str, students, schedule, next):
-        """Class Object
-
-        Args:
-            class_id: generated with uuid
-            class_name (str): class name
-            students (_type_): _description_
-            schedules (_type_): _description_
-            next (): _description_
-        """        
-        self.class_id = str(uuid.uuid4())
-        self.students = students
-        self.schedule = schedule
-        self.next = next
+    class_id: str =  field(default_factory=lambda: str(uuid.uuid4()))
+    students: Student
+    schedule: Schedule

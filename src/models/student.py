@@ -5,9 +5,8 @@ import uuid
 from dataclasses import dataclass, field
 
 #==========================================================================
-# CLASSES / DATA STRUCTURE: __BLUEPRINT__
+# CLASSES / DATA STRUCTURE: Student
 #==========================================================================
-
 @dataclass
 class Student:
     student_id: str = field(default_factory=lambda: str(uuid.uuid4()))
