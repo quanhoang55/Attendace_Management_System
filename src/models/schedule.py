@@ -22,13 +22,6 @@ class Period(IntEnum):
     WEEK4 = 4
     WEEK5 = 5
 
-class Room(IntEnum):
-    NO1 = 1
-    NO2 = 2
-    NO3 = 3
-    NO4 = 4
-    NO5 = 5
-
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Schedule
 #==========================================================================
@@ -36,4 +29,4 @@ class Room(IntEnum):
 class Schedule:
     weekday: Weekday
     period: Period
-    room: Room
+    room: str
