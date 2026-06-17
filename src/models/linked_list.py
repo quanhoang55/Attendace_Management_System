@@ -15,9 +15,14 @@ class Node:
 #==========================================================================
 # CLASSES / DATA STRUCTURE: LinkedList
 #==========================================================================
-@dataclass
 class LinkedList:   
-    head: Optional[Node] = None
+    def __init__(self, head: Optional[Node]):
+        """Init Linked List
+
+        Args:
+            head (Optional[Node])
+        """        
+        self.head = head
 
     def appendFirst(self, value):
         """Adds a new node to the beginning of the list.
