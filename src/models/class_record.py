@@ -1,6 +1,7 @@
 #==========================================================================
 # IMPORTS & CONFIGURATION
 #==========================================================================
+from models.linked_list import LinkedList
 import uuid
 from dataclasses import dataclass, field
 from models.student import Student
@@ -12,7 +13,7 @@ from models.schedule import Schedule
 
 @dataclass()
 class Class:    
-    class_id: str =  field(default_factory=lambda: str(uuid.uuid4()))
+    class_id: str
     class_name: str
-    students: Student
-    schedules: Schedule
+    students: LinkedList
+    schedules: LinkedList

@@ -1,0 +1,63 @@
+Hướng dẫn/Yêu cầu chung  
+
+Yêu cầu ngôn ngữ lập trình: Có thể sử dụng các ngôn ngữ sau đây: C/C++/C#/Java/Python 
+
+Không sử dụng các cấu trúc dữ liệu nâng cao/thư viện được cung cấp sẵn có (như list, hash, queue, thư viện ma trận, thư viện số lớn của nền tảng lập trình, sắp xếp, tìm kiếm) mà phải tự cài đặt các cấu trúc dữ liệu, thuật toán được sử dụng 
+
+Yêu cầu chung của chương trình: 
+
+Người sử dụng có thể lựa chọn tác vụ từ menu (đơn giản) để thực hiện các tác vụ cho đến khi chọn kết thúc chương trình 
+
+Các dữ liệu vào ra được lưu trữ trong file text (có thể có cấu trúc như json, xml, cách dòng, …). Người sử dụng có thể nhập liệu từ bàn phím, các dữ liệu được lưu xuống file text) 
+
+Vận dụng các kỹ thuật thiết kế, lập trình, kiểm thử 
+
+Yêu cầu kết quả:  
+
+Kết quả điện tử: phân thành 2 file, tải lên assignment trên MS Teams 
+
+File báo cáo (word), thể thức (font chữ, trình bày) tham khảo mẫu đồ án của Đại học. Một số thông tin cần có: 
+
+thông tin người thực hiện, phân công (nếu là nhóm) 
+
+mô tả tổng thể chức năng, cách thiết kế/tổ chức chương trình, file dữ liệu 
+
+tình huống kiểm thử, kết quả thực hiện (hình ảnh chụp kết quả)  
+
+tổng kết các kỹ thuật đã vận dụng 
+
+phụ lục code hàm main, các mô tả hàm xử lý tác nghiệp chính 
+
+File nén (.zip, .rar) chương trình, trong đó chứa 
+
+Thư mục, các file mã nguồn 
+
+Các file dữ liệu 
+
+Báo cáo in để nộp & ký danh sách thi 
+
+
+//
+Chủ đề 9: Điểm danh 
+
+Hệ thống quản lý điểm danh lớp học 
+
+Cho phép ghi nhận điểm danh theo ngày cho từng sinh viên (mã sinh viên, họ tên) cho các lớp học. Cho phép tìm kiếm theo ngày của lớp hoặc theo mã sinh viên. 
+
+Tính năng cốt lõi: 
+
+Quản lý danh sách lớp và thời khóa biểu (thứ, tiết, phòng). 
+
+Ghi nhận điểm danh: Có mặt, vắng có phép, vắng không phép. 
+
+Logic nghiệp vụ: 
+
+Tự động tính tỷ lệ vắng mặt của từng sinh viên. 
+
+Cảnh báo nếu sinh viên vắng quá 20% số buổi (nguy cơ cấm thi). 
+
+Báo cáo:  
+
+Thống kê sĩ số lớp theo từng buổi học;  
+
+Danh sách sinh viên vắng nhiều nhất. 

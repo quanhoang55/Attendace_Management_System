@@ -1,11 +1,8 @@
 #==========================================================================
 # IMPORTS & CONFIGURATION
 #==========================================================================
-from dataclasses import dataclass, field
-import uuid
+from dataclasses import dataclass
 from enum import Enum
-from models.schedule import Schedule
-from models.student import Student, Student_ID
 
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Status
@@ -19,9 +16,9 @@ class Status(Enum):
 # CLASSES / DATA STRUCTURE: Attendance Record
 #==========================================================================
 
-@dataclass(frozen=True)
+@dataclass
 class AttendanceRecord:
-    class_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    date: Schedule
-    student_id: Student_ID
+    class_id: str
+    date: str
+    student_id: str
     status: Status
