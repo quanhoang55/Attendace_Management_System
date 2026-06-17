@@ -25,7 +25,7 @@ class Period(IntEnum):
 #==========================================================================
 # CLASSES / DATA STRUCTURE: Schedule
 #==========================================================================
-@dataclass(frozen=True)
+@dataclass
 class Schedule:
     weekday: Weekday
     period: Period

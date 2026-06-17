@@ -1,35 +1,37 @@
-#==========================================================================
+# ==========================================================================
 # IMPORTS & CONFIGURATION
-#==========================================================================
+# ==========================================================================
 from dataclasses import dataclass
 from typing import Any, Optional
 
-#==========================================================================
+
+# ==========================================================================
 # CLASSES / DATA STRUCTURE: NODE
-#==========================================================================
+# ==========================================================================
 @dataclass
 class Node:
     data: Any
     next: Optional["Node"] = None
 
-#==========================================================================
+
+# ==========================================================================
 # CLASSES / DATA STRUCTURE: LinkedList
-#==========================================================================
-class LinkedList:   
-    def __init__(self, head: Optional[Node]):
+# ==========================================================================
+class LinkedList:
+    def __init__(self, value: Optional[Any]):
         """Init Linked List
 
         Args:
-            head (Optional[Node])
-        """        
-        self.head = head
+            head (Optional[Any])
+        """
+        self.head = Node(value)
 
     def appendFirst(self, value):
         """Adds a new node to the beginning of the list.
 
         Args:
             value (Node): Node we want to add
-        """        
+        """
         # check is this head None or Not
         if self.head is None:
             self.head = Node(value)
@@ -43,8 +45,8 @@ class LinkedList:
 
         Args:
             value (Node): None we want to add
-        """    
-        # check is this head None or Not    
+        """
+        # check is this head None or Not
         if self.head is None:
             self.head = Node(value)
             return
@@ -82,14 +84,14 @@ class LinkedList:
 
         Returns:
             Node
-        """        
+        """
         tmp = self.head
         while tmp is not None:
             if tmp.data == value:
                 return tmp
             tmp = tmp.next
         return None
-        
+
     def swap(self, value_1: Any, value_2: Any):
 
         node_1 = self.search(value_1)
