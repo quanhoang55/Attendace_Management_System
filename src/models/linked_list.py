@@ -16,13 +16,13 @@ class Node:
 # CLASSES / DATA STRUCTURE: LinkedList
 #==========================================================================
 class LinkedList:   
-    def __init__(self, head: Optional[Node]):
+    def __init__(self, value: Optional[Any]):
         """Init Linked List
 
         Args:
-            head (Optional[Node])
+            head (Optional[Any])
         """        
-        self.head = head
+        self.head = Node(value)
 
     def appendFirst(self, value):
         """Adds a new node to the beginning of the list.
@@ -89,6 +89,7 @@ class LinkedList:
                 return tmp
             tmp = tmp.next
         return None
+    
     def swap(self, value_1: Any, value_2: Any):
 
         node_1 = self.search(value_1)

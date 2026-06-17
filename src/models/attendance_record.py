@@ -1,27 +1,28 @@
-#==========================================================================
+# ==========================================================================
 # IMPORTS & CONFIGURATION
-#==========================================================================
-from dataclasses import dataclass, field
-import uuid
+# ==========================================================================
 from enum import Enum
-from models.schedule import Schedule
-from models.student import Student, Student_ID
+from src.models.schedule import Schedule
+from src.models.student import Student
+from src.models.class_record import Class
 
-#==========================================================================
+
+# ==========================================================================
 # CLASSES / DATA STRUCTURE: Status
-#==========================================================================
+# ==========================================================================
 class Status(Enum):
     CM = "Co mat"
     VCP = "Vang mat co phep"
     VKP = "Vang mat khong phep"
 
-#==========================================================================
-# CLASSES / DATA STRUCTURE: Attendance Record
-#==========================================================================
 
-@dataclass(frozen=True)
+# ==========================================================================
+# CLASSES / DATA STRUCTURE: Attendance Record
+# ==========================================================================
 class AttendanceRecord:
-    class_id: str = field(default_factory=lambda: str(uuid.uuid4()))
-    date: Schedule
-    student_id: Student_ID
-    status: Status
+    def __init__(self, class_ob: Class, student: Student, status: Status):
+        self.class_id = class_ob.class_id
+        self.date = class_ob.schedule
+        if class_ob.students.search(student) is not None:
+            self.student_id = student.student_id
+            self.status = status
