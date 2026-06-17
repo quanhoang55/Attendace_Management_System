@@ -1,0 +1,20 @@
+MI3060|Cấu trúc dữ liệu và giải thuật
+PH1110|Vật lý đại cương 1
+IT3011|Kỹ thuật lập trình
+IT3020|Hệ điều hành
+MI2010|Giải tích 1
+MI2020|Giải tích 2
+PH1120|Vật lý đại cương 2
+IT3100|Cơ sở dữ liệu
+IT3030|Mạng máy tính
+IT3040|Kỹ thuật phần mềm
+IT1110|Tin học đại cương
+MI1010|Đại số đại cương
+FL1101|Tiếng Anh chuyên ngành
+IT3080|Trí tuệ nhân tạo
+IT4409|Thiết kế giao diện người dùng
+IT4441|An toàn thông tin
+IT4501|Lập trình Web
+IT3090|Phân tích thiết kế hệ thống
+IT4010|Kiến trúc máy tính
+IT4172|Lập trình Java
