@@ -1,7 +1,8 @@
 # ==========================================================================
 # IMPORTS & CONFIGURATION
 # ==========================================================================
-from enum import Enum
+from enum import IntEnum
+from typing import Optional
 from src.models.student import Student, Student_ID
 from src.models.class_record import Class
 from src.models.schedule import Schedule, Weekday, Period, Room
@@ -10,22 +11,54 @@ from src.models.schedule import Schedule, Weekday, Period, Room
 # ==========================================================================
 # CLASSES / DATA STRUCTURE: Status
 # ==========================================================================
-class Status(Enum):
-    CM = "Co mat"
-    VCP = "Vang mat co phep"
-    VKP = "Vang mat khong phep"
+class Status(IntEnum):
+    NONE = 0
+    CM = 1
+    VCP = -1
+    VKP = -2
 
 
 # ==========================================================================
 # CLASSES / DATA STRUCTURE: Attendance Record
 # ==========================================================================
 class AttendanceRecord:
-    def __init__(self, class_ob: Class, student: Student, status: Status):
+    def __init__(
+        self,
+        class_ob: Class,
+        student: Student,
+        status: Status,
+    ):
+        """Init Attendace Record
+
+        Args:
+            class_ob (Class): Class
+            student (Student): Student
+            status (Status): Status: "CM", "VCP", "VKP"
+        """
         self.class_id = class_ob.class_id
         self.date = class_ob.schedule
         if class_ob.students.search(student) is not None:
             self.student_id = student.student_id
-            self.status = status
+            self.status = status.NONE
+
+    def arrived(self):
+        """
+        Attendance counted
+        """
+        status = Status.CM
+        self.status = status
+        return
+
+    def notArrived(self, xp: Optional[bool]):
+        """Attendance counted, if xp is True then status is "VCP", if not then status is "VKP"
+
+        Args:
+            xp (Optional[bool]): is it "VCP" or "VKP"
+        """
+        if xp:
+            self.status = Status.VCP
+        else:
+            self.status = Status.VKP
 
 
 # ==========================================================================
