@@ -5,8 +5,9 @@
 # IMPORTS & MODULE LOADING
 # ==========================================================================
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional, Any
 import json
+from supabase import create_client, Client
 
 # ==========================================================================
 # PARAMETERS
@@ -43,7 +44,7 @@ def txt_to_ls(file_path: str) -> List[List[str]]:
     """
     try:
         with open(file_path, "r", encoding="utf-8") as file:
-            raw_data = file.read().split("\n")[:-1]
+            raw_data = file.read().splitlines()
             clean_data = [element.split("|") for element in raw_data]
     except Exception:
         print(f"{Exception}: the file_path can't be read")
@@ -51,7 +52,18 @@ def txt_to_ls(file_path: str) -> List[List[str]]:
     return clean_data
 
 
-def ls_mapping(clean_data: List[List[str]], keys: List[str]):
+def ls_mapping(
+    clean_data: List[List[Any]], keys: List[str]
+) -> Optional[List[Dict[str, Any]]]:
+    """turn a List of List into List of Dictionary
+
+    Args:
+        clean_data (List[List[Any]]): List of List
+        keys (List[str]): List of Keys
+
+    Returns:
+        Optional[List[Dict[str, Any]]]: A List of Dictionary
+    """
     if len(keys) != len(clean_data[0]):
         print("the lenght of keys isn't equal to the lenght of clean_data!")
         return
@@ -59,8 +71,6 @@ def ls_mapping(clean_data: List[List[str]], keys: List[str]):
     for element in clean_data:
         zipped_data = dict(zip(keys, element))
         data.append(zipped_data)
-
-    data = json.dumps(data, ensure_ascii=False, indent=4)
     return data
 
 
@@ -72,8 +82,8 @@ def insert_to_supabase():
 # MAIN EXECUTION ENTRYPOINT
 # ==========================================================================
 def main():
-    data = txt_to_ls(classes_file_path)
-    json_data = ls_mapping(data, classes_keys)
+    data = txt_to_ls(schedules_file_path)
+    json_data = ls_mapping(data, schedules_keys)
     print(json_data)
 
 
