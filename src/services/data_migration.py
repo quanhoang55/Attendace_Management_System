@@ -41,6 +41,7 @@ file_path = student_file_path
 key = student_keys
 table_name = "student"
 pk_fields = ["student_id"]
+isduplicated = True
 
 
 # ==========================================================================
@@ -113,11 +114,11 @@ def upsert_json_to_supabase(data: List[Dict[str, Any]], table_name: str):
     """Upsert json into supabase
 
     Args:
-        data (List[Dict[str, Any]]):
-        table_name (str):
+        data (List[Dict[str, Any]])
+        table_name (str)
     """
     try:
-        response = supabase.table(table_name).insert(data).execute()
+        response = supabase.table(table_name).upsert(data).execute()
         print("Upsert Successfully!")
     except Exception as e:
         print(f"{e}: Can't upsert data to Supabase!")
@@ -125,11 +126,16 @@ def upsert_json_to_supabase(data: List[Dict[str, Any]], table_name: str):
 
 
 def data_migration(
-    file_path: str, keys: List[str], table_name: str, pk_fields: List[str]
+    file_path: str,
+    keys: List[str],
+    table_name: str,
+    pk_fields: List[str],
+    isduplicated: bool,
 ):
     data = txt_to_ls(file_path)
     mapping_data = ls_mapping(data, keys)
-    cleaned_data = remove_duplicates_before_upsert(mapping_data, pk_fields)
+    if isduplicated:
+        cleaned_data = remove_duplicates_before_upsert(mapping_data, pk_fields)
     upsert_json_to_supabase(cleaned_data, table_name)
 
 
@@ -141,4 +147,5 @@ data_migration(
     key,
     table_name,
     pk_fields,
+    isduplicated,
 )
