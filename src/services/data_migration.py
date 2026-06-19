@@ -4,6 +4,7 @@
 # ==========================================================================
 # IMPORTS & MODULE LOADING
 # ==========================================================================
+from dotenv import load_dotenv
 import os
 from typing import List, Dict, Optional, Any
 import json
@@ -12,6 +13,13 @@ from supabase import create_client, Client
 # ==========================================================================
 # PARAMETERS
 # ==========================================================================
+
+# Supabase Connection
+# load the .env
+load_dotenv()
+url: str = os.environ.get("SUPABASE_URL")
+key: str = os.environ.get("SUPABASE_KEY")
+supabase: Client = create_client(url, key)
 
 # ./
 ROOTDIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -26,8 +34,13 @@ student_file_path = os.path.join(DATAPATH, "students.txt")
 # keys:
 attendance_keys = []
 classes_keys = ["class_id", "class_name"]
-schedules_keys = ["class_id", "weekday", "period", "room"]
-student_keys = ["class_id", "student_id", "student_name"]
+schedules_keys = ["schedule_id", "class_id", "weekday", "period", "room"]
+student_keys = ["student_id", "class_id", "student_name"]
+# Input
+file_path = student_file_path
+key = student_keys
+table_name = "student"
+pk_fields = ["student_id"]
 
 
 # ==========================================================================
@@ -74,18 +87,58 @@ def ls_mapping(
     return data
 
 
-def insert_to_supabase():
-    pass
+def remove_duplicates_before_upsert(
+    data: List[Dict[str, Any]], pk_fields: List[str]
+) -> List[Dict[str, Any]]:
+    """Remove Duplicates
+
+    Args:
+        data (List[Dict[str, Any]])
+        pk_fields (List[str])
+
+    Returns:
+        List[Dict[str, Any]]
+    """
+    seen = set()
+    unique_data = []
+    for row in data:
+        identifier = tuple(row[key] for key in pk_fields if key in row)
+        if identifier not in seen:
+            seen.add(identifier)
+            unique_data.append(row)
+    return unique_data
+
+
+def upsert_json_to_supabase(data: List[Dict[str, Any]], table_name: str):
+    """Upsert json into supabase
+
+    Args:
+        data (List[Dict[str, Any]]):
+        table_name (str):
+    """
+    try:
+        response = supabase.table(table_name).insert(data).execute()
+        print("Upsert Successfully!")
+    except Exception as e:
+        print(f"{e}: Can't upsert data to Supabase!")
+    return
+
+
+def data_migration(
+    file_path: str, keys: List[str], table_name: str, pk_fields: List[str]
+):
+    data = txt_to_ls(file_path)
+    mapping_data = ls_mapping(data, keys)
+    cleaned_data = remove_duplicates_before_upsert(mapping_data, pk_fields)
+    upsert_json_to_supabase(cleaned_data, table_name)
 
 
 # ==========================================================================
 # MAIN EXECUTION ENTRYPOINT
 # ==========================================================================
-def main():
-    data = txt_to_ls(schedules_file_path)
-    json_data = ls_mapping(data, schedules_keys)
-    print(json_data)
-
-
-if __name__ == "__main__":
-    main()
+data_migration(
+    file_path,
+    key,
+    table_name,
+    pk_fields,
+)
