@@ -28,9 +28,9 @@ const Header = ({ myBrand }: { myBrand: Brand }) => {
                 </div>
 
                 <nav className="header__nav" id="headerNav">
-                    <Link to="/">Home Map</Link>
-                    <Link to="/ChatBot">ChatBot</Link>
-                    <Link to="/DashBoard">DashBoard</Link>
+                    <Link to="/">Attendance</Link>
+                    <Link to="/ClassRoom">ClassRoom</Link>
+                    <Link to="/Schedule">Schedule</Link>
                 </nav>
 
                 <div className="header__right">

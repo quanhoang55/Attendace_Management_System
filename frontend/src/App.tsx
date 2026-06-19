@@ -14,9 +14,9 @@ import { Header } from "./components/header";
 import type { Brand } from "./components/header";
 
 // Pages
-// import { Home } from "./pages/home";
-// import { DashBoard } from "./pages/dashboard/dashboard";
-// import { ChatBot } from "./pages/chatbot/chatbot";
+import { Attendance } from "./pages/attendance/attendance";
+import { Classroom } from "./pages/classroom/classroom";
+import { Schedule } from "./pages/schedule/schedule";
 
 // ============================================================
 // MY BRAND
@@ -40,11 +40,11 @@ const App = () => {
       <BrowserRouter>
 
         <Header myBrand={MyBrand} />
-        {/* <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/ChatBot" element={<ChatBot />} />
-            <Route path="/DashBoard" element={<DashBoard />} />
-          </Routes> */}
+        <Routes>
+          <Route path="/" element={<Attendance />} />
+          <Route path="/ChatBot" element={<Classroom />} />
+          <Route path="/DashBoard" element={<Schedule />} />
+        </Routes>
 
       </BrowserRouter>
     </>
