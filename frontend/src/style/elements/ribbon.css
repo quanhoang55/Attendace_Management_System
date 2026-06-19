@@ -1,0 +1,31 @@
+@import "../index.css";
+
+/* ----- Ribbon ----- */
+
+.ribbon {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-bottom: var(--border);
+}
+
+.ribbon__cell {
+    padding: clamp(1rem, 1.8vw, 1.8rem) clamp(1rem, 1.5vw, 1.5rem);
+    border-right: var(--border-thin);
+    background: var(--base);
+    transition: background 0s, color 0s;
+    cursor: default;
+}
+
+
+.ribbon__cell:last-child { border-right: none; }
+.ribbon__cell:hover { background: var(--ink); color: var(--base); }
+.ribbon__cell:nth-child(3) { background: var(--ink); color: var(--base); }
+.ribbon__cell:nth-child(3):hover { background: var(--safety); }
+
+.ribbon__label { font-size: var(--fs-micro); text-transform: uppercase; letter-spacing: 0.16em; opacity: 0.4; margin-bottom: 0.6rem; }
+.ribbon__value { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: clamp(1.4rem, 2.5vw, 2.2rem); line-height: 1; letter-spacing: -0.03em; }
+.ribbon__unit { font-family: 'JetBrains Mono', monospace; font-size: 0.45em; font-weight: 400; opacity: 0.45; margin-left: 0.1em; }
+
+.ribbon__cell .bar-track { margin-top: 0.8rem; height: 3px; }
+.ribbon__cell:nth-child(3) .bar-track,
+.ribbon__cell:hover .bar-track { background: rgba(255,255,255,0.12); }
