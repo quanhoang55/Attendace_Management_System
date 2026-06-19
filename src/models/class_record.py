@@ -1,8 +1,8 @@
 # ==========================================================================
 # IMPORTS & CONFIGURATION
 # ==========================================================================
-from src.models.schedule import Schedule
-from src.management.student_list import StudentList
+from models.schedule import Schedule
+from management.student_list import StudentList
 from typing import Optional
 
 # ==========================================================================

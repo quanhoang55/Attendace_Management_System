@@ -2,9 +2,9 @@
 # IMPORTS & CONFIGURATION
 # ==========================================================================
 from enum import Enum
-from src.models.student import Student, Student_ID
-from src.models.class_record import Class
-from src.models.schedule import Schedule, Weekday, Period, Room
+from models.student import Student, Student_ID
+from models.class_record import Class
+from models.schedule import Schedule, Weekday, Period, Room
 
 
 # ==========================================================================
