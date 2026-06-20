@@ -1,13 +1,18 @@
 import "../../style/elements/bentoCard.css"
 import "../../style/main/section.css";
-import { BasicTable } from "./table";
+import { Table } from "./table";
 
 const Attendance = () => {
+
     return (
         <main>
             <section className="section">
-                <h1>hello</h1>
-                <BasicTable />
+                <div className="container">
+                    <h1 className="section__header">Attendance Record</h1>
+                </div>
+                <div className="container">
+                    <Table />
+                </div>
             </section>
             <section className="section">
                 <div className="container">
