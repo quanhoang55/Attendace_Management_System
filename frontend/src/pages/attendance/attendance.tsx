@@ -2,7 +2,8 @@ import "../../style/elements/bentoCard.css"
 import "../../style/main/section.css";
 import { useState, useEffect } from "react";
 import { FilterBox } from "./filter_box";
-import { Table, type StudentData } from "./table";
+import { Table, type StudentData, type AttendanceStatusType } from "./table";
+import { supabase } from "../../utils/supabaseClient";
 const Attendance = () => {
     const [rawStudents, setRawStudents] = useState<StudentData[]>([]);
 
@@ -11,24 +12,43 @@ const Attendance = () => {
     const [selectedClass, setSelectedClass] = useState("MI3060");
 
     useEffect(() => {
-        const fetchStudentsByClass = async () => {
+        const fetchAttendanceData = async () => {
             try {
-                const response = await fetch(`http://localhost:8000/api/students?class_id=${selectedClass}`);
-                const data = await response.json();
-                setRawStudents(data);
+                // Thực hiện Inner Join trong Supabase: 
+                // Lấy bảng attendance nhưng kéo kèm cột student_name từ bảng students thông qua foreign key
+                const { data, error } = await supabase
+                    .from("attendance")
+                    .select(`
+                        student_id,
+                        status,
+                        students (
+                            student_name
+                        )
+                    `)
+                    .eq("class_id", selectedClass);
+
+                if (error) throw error;
+
+                if (data) {
+                    // Ánh xạ (Map) lại dữ liệu từ cấu trúc Supabase về đúng cấu trúc StudentData của giao diện
+                    const formattedData: StudentData[] = data.map((item: any) => ({
+                        id: item.student_id,
+                        // Giải quyết việc lấy tên từ bảng liên kết (students)
+                        name: item.students?.student_name || "Ẩn danh",
+                        status: item.status as AttendanceStatusType
+                    }));
+
+                    setRawStudents(formattedData);
+                }
             } catch (error) {
-                console.error("Call API Error:", error);
-                // Nếu lỗi, tạm thời dùng dữ liệu giả của bạn để test giao diện
-                setRawStudents([
-                    { id: "STU001", name: "Nguyen Van A", status: "CM" },
-                    { id: "STU002", name: "Tran Thi B", status: "VCP" },
-                    { id: "STU003", name: "Le Van C", status: "VKP" },
-                    { id: "STU003", name: "Le Van C", status: "NONE" }
-                ]);
+                console.error("API CALL Error:", error);
             }
         };
-        fetchStudentsByClass();
+
+        fetchAttendanceData();
     }, [selectedClass]);
+
+
 
     const displayedStudents = rawStudents
         .filter(student => {

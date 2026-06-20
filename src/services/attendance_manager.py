@@ -1,12 +1,23 @@
 # ==========================================================================
+# Author: Quan
+# Purpose: Attendance Manager
+# ==========================================================================
 # IMPORTS & MODULE LOADING
 # ==========================================================================
 from src.models.class_record import Class
 from src.models.attendance_record import AttendanceRecord
+from src.management.attendance_list import AttendanceList
 
 # ==========================================================================
-# CORE LOGIC & BUSINESS FUNCTIONS
+# PARAMETERS
 # ==========================================================================
+
+
+# ==========================================================================
+# CORE LOGIC & FUNCTIONS
+# ==========================================================================
+def isBanned(attendace_record: AttendanceRecord):
+    pass
 
 
 # ==========================================================================
