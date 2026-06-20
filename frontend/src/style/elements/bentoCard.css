@@ -21,6 +21,7 @@
     overflow: hidden;
 }
 
+
 .bento-card:hover {
     transform: translate(-4px, -4px);
     box-shadow: 12px 12px 0px var(--ink);
@@ -35,11 +36,33 @@
     border-radius: 50%;
     opacity: 0.08;
 }
+
+.bento-table__divider {
+    border: none;
+    height: 3px;
+    background-color: var(--ink);
+    margin: 1rem 0;
+    width: 100%;
+}
+
 /* ----- GRID LAYOUT ----- */
-.bento-card--wide    { grid-column: span 8; }
-.bento-card--mid     { grid-column: span 6; }
-.bento-card--narrow  { grid-column: span 4; }
-.bento-card--tall    { grid-row: span 2; }
+.bento-card--wide {
+    grid-column: span 15;
+    grid-template-rows: auto;
+    height: fit-content;
+}
+
+.bento-card--mid {
+    grid-column: span 6;
+}
+
+.bento-card--narrow {
+    grid-column: span 4;
+}
+
+.bento-card--tall {
+    grid-row: span 2;
+}
 
 /* ----- CARD STYLES ----- */
 
@@ -111,10 +134,21 @@
     box-shadow: 12px 12px 0px var(--ink);
 }
 
+.bento-card__nonshadow.bento-card--wide {
+    display: table-row;
+    /* Restores horizontal cell layout */
+}
+
+.bento-card__nonshadow.bento-card--wide td {
+    display: table-cell;
+    padding: 0.5rem 1.2rem;
+    vertical-align: middle;
+}
+
 .bento-card__nonshadow {
     border: var(--border);
     /* box-shadow: var(--shadow); */
-    padding: clamp(1.2rem, 2vw, 2rem);
+    padding: clamp(0rem, 0vw, 0rem);
     background: var(--base);
     position: relative;
     display: grid;
@@ -123,9 +157,10 @@
     cursor: default;
     overflow: hidden;
 }
-.bento-card__nonshadow:hover {
+
+/* .bento-card__nonshadow:hover {
     transform: translate(-4px, -4px);
-}
+} */
 
 .stat-card--dark {
     background: var(--ink);
@@ -133,7 +168,86 @@
     box-shadow: var(--shadow-safety);
 }
 
-.stat-card--dark:hover { box-shadow: 12px 12px 0px var(--safety); }
+.stat-card--dark:hover {
+    box-shadow: 12px 12px 0px var(--safety);
+}
+
+.bento-dropbox {
+    font-family: inherit;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink);
+
+    /* 2. Dimensions & Spacing */
+    width: 100%;
+    max-width: 180px;
+    padding: 0.5rem 1rem;
+    /* Room for text on left, arrow on right */
+
+    /* 3. Surface Styles */
+    background-color: var(--base);
+    border: var(--border);
+    cursor: pointer;
+
+    /* 4. Custom Arrow Setup */
+    appearance: none;
+    /* Kills default browser arrow layout */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    /* Injects a clean orange arrow matching your Axis header */
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 0.9rem;
+
+    display: inline-block;
+    position: relative;
+    overflow: visible;
+}
+
+.bento-dropbox option {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background-color: var(--base);
+}
+
+.bento__header {
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(80px, 10vw, 120px) 1fr clamp(140px, 15vw, 180px);
+    align-items: center;
+    gap: 1.5rem;
+
+    padding: 1rem 1.4rem;
+
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+
+    cursor: default;
+    overflow: hidden;
+}
+
+.bento__body {
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(80px, 10vw, 120px) 1fr clamp(140px, 15vw, 180px);
+    align-items: center;
+    gap: 1.5rem;
+
+    padding: 1rem 1.4rem;
+
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.05em;
+    color: var(--ink);
+
+    cursor: default;
+    overflow: hidden;
+}
 
 .stat-card__label {
     font-size: var(--fs-micro);
