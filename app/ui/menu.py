@@ -1,4 +1,4 @@
-from app.core.constants import AttendanceStatus
+from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 from app.models.schedule import Schedule
 from app.models.school_class import SchoolClass
@@ -55,7 +55,9 @@ class MainProgram:
                 return val
             print("Error: This field cannot be empty. Please try again.")
 
-    def _get_int_input(self, prompt: str, min_val: int = None, max_val: int = None) -> int:
+    def _get_int_input(
+        self, prompt: str, min_val: int = None, max_val: int = None
+    ) -> int:
         """Prompts the user for an integer, repeating until a valid integer within bounds is provided.
 
         Args:
@@ -126,7 +128,9 @@ class MainProgram:
                 student = Student(studentId, fullName)
                 sc.addStudent(student)
                 self.manager.saveData()
-                print(f"Success: Student {fullName} ({studentId}) added to class {classId}.")
+                print(
+                    f"Success: Student {fullName} ({studentId}) added to class {classId}."
+                )
 
             elif choice == 4:
                 print("\n--- View Students in Class ---")
@@ -143,7 +147,9 @@ class MainProgram:
                     curr = students.head
                     while curr is not None:
                         st = curr.data
-                        print(f" - Student ID: {st.getStudentId()} | Full Name: {st.getFullName()}")
+                        print(
+                            f" - Student ID: {st.getStudentId()} | Full Name: {st.getFullName()}"
+                        )
                         curr = curr.next
 
             elif choice == 5:
@@ -159,7 +165,9 @@ class MainProgram:
                 sub_choice = self._get_int_input("Enter choice (1-2): ", 1, 2)
 
                 if sub_choice == 1:
-                    dayOfWeek = self._get_int_input("Enter Day of Week (2 for Mon, 7 for Sat, 8 for Sun): ", 2, 8)
+                    dayOfWeek = self._get_int_input(
+                        "Enter Day of Week (2 for Mon, 7 for Sat, 8 for Sun): ", 2, 8
+                    )
                     period = self._get_int_input("Enter Period (1-10): ", 1, 10)
                     room = self._get_non_empty_input("Enter Room (e.g., A101): ")
                     sch = Schedule(dayOfWeek, period, room)
@@ -173,11 +181,23 @@ class MainProgram:
                     else:
                         print(f"Schedule for Class '{sc.className}' ({classId}):")
                         curr = schedules.head
-                        day_names = {2: "Monday", 3: "Tuesday", 4: "Wednesday", 5: "Thursday", 6: "Friday", 7: "Saturday", 8: "Sunday"}
+                        day_names = {
+                            2: "Monday",
+                            3: "Tuesday",
+                            4: "Wednesday",
+                            5: "Thursday",
+                            6: "Friday",
+                            7: "Saturday",
+                            8: "Sunday",
+                        }
                         while curr is not None:
                             sch = curr.data
-                            day_str = day_names.get(sch.dayOfWeek, f"Day {sch.dayOfWeek}")
-                            print(f" - {day_str} | Period: {sch.period} | Room: {sch.room}")
+                            day_str = day_names.get(
+                                sch.dayOfWeek, f"Day {sch.dayOfWeek}"
+                            )
+                            print(
+                                f" - {day_str} | Period: {sch.period} | Room: {sch.room}"
+                            )
                             curr = curr.next
 
             elif choice == 6:
@@ -195,7 +215,7 @@ class MainProgram:
                 status_map = {
                     1: AttendanceStatus.PRESENT,
                     2: AttendanceStatus.EXCUSED_ABSENCE,
-                    3: AttendanceStatus.UNEXCUSED_ABSENCE
+                    3: AttendanceStatus.UNEXCUSED_ABSENCE,
                 }
                 status = status_map[status_num]
 
@@ -217,7 +237,9 @@ class MainProgram:
                         print(" - No records recorded yet.")
                     while curr is not None:
                         rec = curr.data
-                        print(f" - ID: {rec.student.getStudentId()} | Name: {rec.student.getFullName()} | Status: {rec.getStatus()}")
+                        print(
+                            f" - ID: {rec.student.getStudentId()} | Name: {rec.student.getFullName()} | Status: {rec.getStatus()}"
+                        )
                         curr = curr.next
 
             elif choice == 8:
@@ -231,7 +253,9 @@ class MainProgram:
                     curr = records.head
                     while curr is not None:
                         rec = curr.data
-                        print(f" - Class: {rec.classId} | Date: {rec.date} | Status: {rec.getStatus()}")
+                        print(
+                            f" - Class: {rec.classId} | Date: {rec.date} | Status: {rec.getStatus()}"
+                        )
                         curr = curr.next
 
             elif choice == 9:
@@ -242,12 +266,18 @@ class MainProgram:
                     print(f"Error: Class with ID '{classId}' does not exist.")
                     return True
                 studentId = self._get_non_empty_input("Enter Student ID: ")
-                student = sc.getStudentList().find(lambda s: s.getStudentId() == studentId)
+                student = sc.getStudentList().find(
+                    lambda s: s.getStudentId() == studentId
+                )
                 if student is None:
-                    print(f"Error: Student '{studentId}' is not enrolled in class '{classId}'.")
+                    print(
+                        f"Error: Student '{studentId}' is not enrolled in class '{classId}'."
+                    )
                     return True
                 rate = sc.calculateAbsenceRate(studentId)
-                print(f"Absence rate of {student.getFullName()} ({studentId}) in class {classId}: {rate:.2f}%")
+                print(
+                    f"Absence rate of {student.getFullName()} ({studentId}) in class {classId}: {rate:.2f}%"
+                )
 
             elif choice == 10:
                 print("\n--- Attendance Stats for One Session ---")
@@ -259,7 +289,9 @@ class MainProgram:
                 date = self._get_non_empty_input("Enter Date (YYYY-MM-DD): ")
                 session = sc.findSession(date)
                 if session is None:
-                    print(f"Error: Session on date '{date}' does not exist for class '{classId}'.")
+                    print(
+                        f"Error: Session on date '{date}' does not exist for class '{classId}'."
+                    )
                     return True
                 summary = self.report.reportAttendanceBySession(session)
                 print(summary)
@@ -275,14 +307,18 @@ class MainProgram:
                 if report_items.size() == 0:
                     print("No students found in this class.")
                 else:
-                    print(f"Most-Absent Students in Class '{sc.className}' ({classId}):")
+                    print(
+                        f"Most-Absent Students in Class '{sc.className}' ({classId}):"
+                    )
                     curr = report_items.head
                     while curr is not None:
                         item = curr.data
-                        print(f" - {item.student.getFullName()} ({item.student.getStudentId()}) | "
-                              f"Sessions recorded: {item.totalSessions} | "
-                              f"Absences: {item.absenceCount} | "
-                              f"Rate: {item.absenceRate:.2f}%")
+                        print(
+                            f" - {item.student.getFullName()} ({item.student.getStudentId()}) | "
+                            f"Sessions recorded: {item.totalSessions} | "
+                            f"Absences: {item.absenceCount} | "
+                            f"Rate: {item.absenceRate:.2f}%"
+                        )
                         curr = curr.next
 
             elif choice == 12:
@@ -296,12 +332,16 @@ class MainProgram:
                 if warning_items.size() == 0:
                     print("No students are at-risk (>20% absence rate) in this class.")
                 else:
-                    print(f"AT-RISK Students in Class '{sc.className}' ({classId}) with absence rate > 20%:")
+                    print(
+                        f"AT-RISK Students in Class '{sc.className}' ({classId}) with absence rate > 20%:"
+                    )
                     curr = warning_items.head
                     while curr is not None:
                         item = curr.data
-                        print(f" - [WARNING] {item.student.getFullName()} ({item.student.getStudentId()}) | "
-                              f"Rate: {item.absenceRate:.2f}% (Absences: {item.absenceCount}/{item.totalSessions})")
+                        print(
+                            f" - [WARNING] {item.student.getFullName()} ({item.student.getStudentId()}) | "
+                            f"Rate: {item.absenceRate:.2f}% (Absences: {item.absenceCount}/{item.totalSessions})"
+                        )
                         curr = curr.next
 
             elif choice == 0:
@@ -311,7 +351,9 @@ class MainProgram:
                 return False
 
             else:
-                print("Error: Invalid option. Please choose a menu option between 0 and 12.")
+                print(
+                    "Error: Invalid option. Please choose a menu option between 0 and 12."
+                )
 
         except ValueError as ve:
             print(f"\nValidation Error: {ve}")

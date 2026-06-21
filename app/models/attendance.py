@@ -1,4 +1,4 @@
-from app.core.constants import AttendanceStatus
+from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 
 
@@ -12,7 +12,9 @@ class AttendanceRecord:
         date (str): Helper attribute for the session date.
     """
 
-    def __init__(self, student: Student, status: str, classId: str = None, date: str = None):
+    def __init__(
+        self, student: Student, status: str, classId: str = None, date: str = None
+    ):
         """Initializes an AttendanceRecord.
 
         Args:

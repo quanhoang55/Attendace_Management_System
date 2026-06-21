@@ -1,6 +1,6 @@
 """Tests for AttendanceReport service: sorting and warning list logic."""
 
-from app.core.constants import AttendanceStatus
+from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 from app.models.school_class import SchoolClass
 from app.services.report_service import AttendanceReport

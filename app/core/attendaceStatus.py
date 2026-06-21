@@ -6,6 +6,7 @@ class AttendanceStatus:
         EXCUSED_ABSENCE (str): Student is absent with permission ("EXCUSED_ABSENCE").
         UNEXCUSED_ABSENCE (str): Student is absent without permission ("UNEXCUSED_ABSENCE").
     """
+
     PRESENT = "PRESENT"
     EXCUSED_ABSENCE = "EXCUSED_ABSENCE"
     UNEXCUSED_ABSENCE = "UNEXCUSED_ABSENCE"

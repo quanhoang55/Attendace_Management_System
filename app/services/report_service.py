@@ -1,5 +1,5 @@
 from app.core.linked_list import MyLinkedList
-from app.core.constants import AttendanceStatus
+from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 from app.models.session import Session
 from app.models.school_class import SchoolClass
@@ -15,7 +15,13 @@ class AbsenceReportItem:
         absenceRate (float): Calculated absence percentage rate.
     """
 
-    def __init__(self, student: Student, totalSessions: int, absenceCount: int, absenceRate: float):
+    def __init__(
+        self,
+        student: Student,
+        totalSessions: int,
+        absenceCount: int,
+        absenceRate: float,
+    ):
         """Initializes an AbsenceReportItem.
 
         Args:
@@ -103,11 +109,16 @@ class AttendanceReport:
                 record = session.findAttendance(studentId)
                 if record is not None:
                     totalSessions += 1
-                    if record.getStatus() in (AttendanceStatus.EXCUSED_ABSENCE, AttendanceStatus.UNEXCUSED_ABSENCE):
+                    if record.getStatus() in (
+                        AttendanceStatus.EXCUSED_ABSENCE,
+                        AttendanceStatus.UNEXCUSED_ABSENCE,
+                    ):
                         absenceCount += 1
                 curr_session_node = curr_session_node.next
 
-            absenceRate = 0.0 if totalSessions == 0 else (absenceCount * 100.0) / totalSessions
+            absenceRate = (
+                0.0 if totalSessions == 0 else (absenceCount * 100.0) / totalSessions
+            )
 
             item = AbsenceReportItem(student, totalSessions, absenceCount, absenceRate)
             report_items.addLast(item)
