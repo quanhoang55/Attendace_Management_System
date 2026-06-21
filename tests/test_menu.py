@@ -1,14 +1,4 @@
-"""Tests for MainProgram helper methods: _get_non_empty_input, _get_int_input.
-
-Note: handleChoice() và run() không được test tự động vì toàn bộ logic nghiệp
-vụ bên trong (addClass, recordAttendance, v.v.) đã được bao phủ riêng tại
-các tầng service và model. Việc test handleChoice sẽ chỉ lặp lại các test
-đó thông qua mock I/O mà không tăng thêm giá trị thực sự.
-
-Tại đây chỉ test 2 hàm helper thuần-logic có thể bị hỏng độc lập:
-  - _get_non_empty_input: từ chối chuỗi rỗng/khoảng trắng
-  - _get_int_input: validate kiểu số nguyên và giới hạn min/max
-"""
+"""Tests for MainProgram helper methods: _get_non_empty_input, _get_int_input."""
 
 import os
 from unittest.mock import patch
