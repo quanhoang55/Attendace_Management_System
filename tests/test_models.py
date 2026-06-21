@@ -1,6 +1,6 @@
 """Tests for domain models: Student, Schedule, SchoolClass, Session, AttendanceRecord."""
 
-from app.core.constants import AttendanceStatus
+from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 from app.models.schedule import Schedule
 from app.models.attendance import AttendanceRecord
