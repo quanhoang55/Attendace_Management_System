@@ -1,218 +1,181 @@
-# Kế Hoạch Làm Bài Tập Lớn: Hệ Thống Quản Lý Điểm Danh
+# 📋 Hệ Thống Quản Lý Điểm Danh
 
-## 1. Tóm Tắt Hướng Làm
+Ứng dụng dòng lệnh (CLI) quản lý điểm danh học sinh, được xây dựng bằng **Python** — không dùng bất kỳ thư viện collection nào của ngôn ngữ, toàn bộ cấu trúc dữ liệu được tự cài đặt bằng danh sách liên kết đơn (`MyLinkedList`).
 
-Xây dựng chương trình console bằng Python, điều khiển bằng menu. Dữ liệu lưu trong file text. Không dùng `list`, `dict`, `set`, hàm `sort`, hay thư viện tìm kiếm/sắp xếp có sẵn.
+---
 
-Chọn hướng cài đặt chính:
+## ✨ Tính Năng
 
-- Dùng **danh sách liên kết đơn tự cài đặt** để lưu lớp học, sinh viên, lịch học, buổi điểm danh.
-- Dùng **tìm kiếm tuyến tính** tự viết.
-- Dùng **sắp xếp chọn** hoặc **sắp xếp nổi bọt** tự viết cho báo cáo sinh viên vắng nhiều nhất.
-- Lưu dữ liệu bằng file text dạng dễ đọc, mỗi dòng là một bản ghi.
+### Quản Lý Lớp Học
+- Thêm lớp học mới
+- Xem danh sách tất cả lớp học
+- Thêm học sinh vào lớp
+- Xem danh sách học sinh trong lớp
+- Thêm / xem thời khóa biểu cho lớp
 
-## 2. Các Chức Năng Cần Làm
+### Điểm Danh
+- Ghi nhận điểm danh (Có mặt / Vắng có phép / Vắng không phép)
+- Tìm kiếm điểm danh theo lớp + ngày
+- Tìm kiếm lịch sử điểm danh theo mã học sinh
+- Xem tỉ lệ vắng mặt của học sinh trong một lớp
 
-### Quản lý lớp học
+### Báo Cáo
+- Thống kê điểm danh theo buổi học
+- Xếp hạng học sinh vắng nhiều nhất
+- Danh sách học sinh có nguy cơ (tỉ lệ vắng > 20%)
 
-Cần có các tác vụ:
+### Lưu Trữ
+- Tự động lưu dữ liệu ra file khi thoát
+- Tự động tải lại dữ liệu khi khởi động
 
-- Thêm lớp học: mã lớp, tên môn/lớp.
-- Xem danh sách lớp.
-- Tìm lớp theo mã lớp.
-- Quản lý danh sách sinh viên trong lớp:
-  - Thêm sinh viên: mã sinh viên, họ tên.
-  - Xem sinh viên theo lớp.
-  - Tìm sinh viên theo mã sinh viên.
+---
 
-### Quản lý thời khóa biểu
+## 🏗️ Kiến Trúc
 
-Mỗi lớp có lịch học gồm:
-
-- Thứ trong tuần.
-- Tiết học.
-- Phòng học.
-
-Menu cần có:
-
-- Thêm lịch học cho lớp.
-- Xem thời khóa biểu của lớp.
-
-### Ghi nhận điểm danh
-
-Mỗi buổi điểm danh cần lưu:
-
-- Mã lớp.
-- Ngày học.
-- Mã sinh viên.
-- Trạng thái:
-  - `CM`: Có mặt.
-  - `VCP`: Vắng có phép.
-  - `VKP`: Vắng không phép.
-
-Menu cần có:
-
-- Điểm danh cho một lớp theo ngày.
-- Xem điểm danh của một lớp theo ngày.
-- Tìm lịch sử điểm danh theo mã sinh viên.
-
-## 3. Logic Nghiệp Vụ Và Báo Cáo
-
-### Tính tỷ lệ vắng
-
-Với mỗi sinh viên:
-
-```text
-số buổi vắng = vắng có phép + vắng không phép
-tổng số buổi đã điểm danh = số bản ghi điểm danh của sinh viên đó
-tỷ lệ vắng = số buổi vắng / tổng số buổi * 100
+```
+ktlt_project/
+├── main.py                        # Entry point
+│
+├── app/
+│   ├── core/
+│   │   ├── linked_list.py         # Cấu trúc dữ liệu MyLinkedList (tự cài đặt)
+│   │   └── constants.py           # Hằng số AttendanceStatus
+│   │
+│   ├── models/
+│   │   ├── student.py             # Lớp Student
+│   │   ├── schedule.py            # Lớp Schedule
+│   │   ├── attendance.py          # Lớp AttendanceRecord
+│   │   ├── session.py             # Lớp Session
+│   │   └── school_class.py        # Lớp SchoolClass
+│   │
+│   ├── services/
+│   │   ├── file_manager.py        # Đọc/ghi file
+│   │   ├── report_service.py      # Tạo báo cáo & AbsenceReportItem
+│   │   └── attendance_manager.py  # Facade điều phối toàn hệ thống
+│   │
+│   └── ui/
+│       └── menu.py                # Giao diện menu CLI (MainProgram)
+│
+├── tests/
+│   ├── test_linked_list.py        # Test MyLinkedList & _split_line
+│   ├── test_models.py             # Test domain models
+│   ├── test_services.py           # Test business logic & sắp xếp
+│   └── test_persistence.py        # Test lưu/tải dữ liệu
+│
+└── data/
+    ├── classes.txt
+    ├── students.txt
+    ├── schedules.txt
+    ├── sessions.txt
+    └── attendance.txt
 ```
 
-Nếu tỷ lệ vắng `> 20%`, hiển thị cảnh báo:
+### Phân Lớp Hệ Thống
 
-```text
-Nguy cơ cấm thi
+```
+MainProgram  (UI / menu loop)
+    │
+AttendanceManager  (Facade / điều phối)
+    │                   └──────────────────────────┐
+SchoolClass                         AttendanceReport   FileManager
+    │    └──────────────┐
+Schedule    Session
+                │
+          AttendanceRecord ── AttendanceStatus
+                │
+            Student
+
+MyLinkedList<T> + Node<T>  ← dùng xuyên suốt toàn bộ hệ thống
 ```
 
-### Báo cáo cần có
+---
 
-- Thống kê sĩ số lớp theo từng buổi:
-  - Tổng sinh viên.
-  - Số có mặt.
-  - Số vắng có phép.
-  - Số vắng không phép.
-- Danh sách sinh viên vắng nhiều nhất:
-  - Tính số buổi vắng của từng sinh viên.
-  - Sắp xếp giảm dần bằng thuật toán tự cài.
-  - In top sinh viên vắng nhiều.
+## ⚙️ Yêu Cầu
 
-## 4. Thiết Kế Chương Trình
+- **Python 3.8+**
+- Không cần cài thêm thư viện bên ngoài
 
-### Các lớp dữ liệu nên có
+---
 
-- `Student`
-  - `student_id`
-  - `full_name`
+## 🚀 Cách Chạy
 
-- `Class`
-  - `class_id`
-  - `class_name`
-  - `students`
-  - `schedules`
-
-- `Schedule`
-  - `weekday`
-  - `period`
-  - `room`
-
-- `AttendanceRecord`
-  - `class_id`
-  - `date`
-  - `student_id`
-  - `status`
-
-- `LinkedList`
-  - `head`
-  - `append()`
-  - `search()`
-  - `traverse()`
-  - `remove()` nếu cần
-
-### File dữ liệu
-
-Dùng 3 file text chính:
-
-```text
-classes.txt
-students.txt
-attendance.txt
+```bash
+# Chạy ứng dụng chính
+python main.py
 ```
 
-Gợi ý định dạng:
-
-```text
-classes.txt
-CLASS_ID|CLASS_NAME
-
-students.txt
-CLASS_ID|STUDENT_ID|FULL_NAME
-
-attendance.txt
-CLASS_ID|DATE|STUDENT_ID|STATUS
+```bash
+# Chạy test suite
+python -m tests.test_linked_list
+python -m tests.test_models
+python -m tests.test_services
+python -m tests.test_persistence
 ```
 
-Ví dụ:
+---
 
-```text
-IT001|Kỹ thuật lập trình
-IT001|20241234|Nguyễn Văn A
-IT001|2026-05-14|20241234|CM
+## 📄 Định Dạng Dữ Liệu
+
+Dữ liệu được lưu dưới dạng văn bản thuần, phân cách bằng ký tự `|`, mỗi bản ghi trên một dòng:
+
+| File | Định dạng |
+|------|-----------|
+| `classes.txt` | `classId\|className` |
+| `students.txt` | `classId\|studentId\|fullName` |
+| `schedules.txt` | `classId\|dayOfWeek\|period\|room` |
+| `sessions.txt` | `classId\|date` |
+| `attendance.txt` | `classId\|date\|studentId\|status` |
+
+> Trạng thái điểm danh (`status`) nhận một trong ba giá trị: `PRESENT`, `EXCUSED_ABSENCE`, `UNEXCUSED_ABSENCE`.
+
+---
+
+## 📐 Ràng Buộc Kỹ Thuật
+
+Đây là project học thuật với các ràng buộc bắt buộc:
+
+- **Không** dùng `list`, `dict`, `set`, `tuple`, hay bất kỳ collection nào của Python cho dữ liệu ứng dụng — chỉ dùng `MyLinkedList<T>`.
+- **Không** dùng hàm sort/search có sẵn (`sorted()`, `.sort()`, `.find()`, v.v.) — tất cả tìm kiếm và sắp xếp đều được viết tay, duyệt node-by-node.
+- **Không** dùng `str.split()` hay bất kỳ hàm tách chuỗi nào để parse file — sử dụng parser thủ công ký tự-by-ký tự (`_split_line`).
+- Sắp xếp danh sách vắng nhiều nhất: **Bubble Sort** thủ công trên các node của `MyLinkedList`.
+
+---
+
+## 🗃️ Mô Tả Các Lớp Chính
+
+| Lớp | Vai Trò |
+|-----|---------|
+| `MyLinkedList` | Danh sách liên kết đơn tự cài — cấu trúc dữ liệu duy nhất trong toàn hệ thống |
+| `Student` | Thông tin học sinh (mã, họ tên) |
+| `Schedule` | Thời khóa biểu (thứ, tiết, phòng) |
+| `AttendanceRecord` | Bản ghi điểm danh của một học sinh trong một buổi |
+| `Session` | Một buổi học cụ thể (lớp + ngày) |
+| `SchoolClass` | Lớp học — chứa danh sách học sinh, thời khóa biểu, buổi học |
+| `AttendanceManager` | Facade: cổng giao tiếp duy nhất giữa UI và domain |
+| `AttendanceReport` | Tạo báo cáo thống kê, xếp hạng, cảnh báo |
+| `FileManager` | Đọc/ghi file văn bản thuần |
+| `AbsenceReportItem` | DTO chứa kết quả tính toán vắng mặt của từng học sinh |
+
+---
+
+## 📊 Công Thức Nghiệp Vụ
+
+**Tỉ lệ vắng mặt:**
 ```
+ti_le = (so_buoi_vang / tong_so_buoi_co_ghi_nhan) x 100
+```
+- Vắng = `EXCUSED_ABSENCE` hoặc `UNEXCUSED_ABSENCE`
+- Nếu chưa có buổi nào được ghi nhận → tỉ lệ = `0.0`
 
-## 5. Thứ Tự Làm Việc
+**Học sinh có nguy cơ:** tỉ lệ vắng **> 20%**
 
-1. Phân tích yêu cầu và chốt phạm vi chức năng.
-2. Thiết kế cấu trúc dữ liệu tự cài:
-   - Node.
-   - LinkedList.
-   - Các lớp dữ liệu chính.
-3. Làm phần đọc/ghi file text.
-4. Làm menu chính.
-5. Làm chức năng quản lý lớp.
-6. Làm chức năng quản lý sinh viên.
-7. Làm chức năng quản lý thời khóa biểu.
-8. Làm chức năng điểm danh theo ngày.
-9. Làm chức năng tìm kiếm:
-   - Theo ngày của lớp.
-   - Theo mã sinh viên.
-10. Làm tính tỷ lệ vắng và cảnh báo trên 20%.
-11. Làm báo cáo thống kê sĩ số từng buổi.
-12. Làm báo cáo sinh viên vắng nhiều nhất.
-13. Kiểm thử bằng dữ liệu mẫu.
-14. Viết báo cáo bài tập lớn.
+---
 
-## 6. Kiểm Thử
+## 🧪 Các Test Case
 
-Cần chuẩn bị dữ liệu test cho các trường hợp:
-
-- Thêm lớp mới thành công.
-- Thêm sinh viên vào lớp.
-- Điểm danh đủ sinh viên trong một ngày.
-- Tìm điểm danh theo ngày của lớp.
-- Tìm điểm danh theo mã sinh viên.
-- Sinh viên vắng đúng 20%.
-- Sinh viên vắng trên 20% và có cảnh báo.
-- Báo cáo sĩ số hiển thị đúng số có mặt/vắng.
-- Báo cáo sinh viên vắng nhiều nhất sắp xếp đúng.
-
-## 7. Báo Cáo Cần Viết
-
-Báo cáo nên có các phần:
-
-- Mô tả đề tài và chức năng chính.
-- Thiết kế chương trình:
-  - Sơ đồ menu.
-  - Các lớp dữ liệu.
-  - Cấu trúc danh sách liên kết.
-  - Cấu trúc file text.
-- Thuật toán đã dùng:
-  - Tìm kiếm tuyến tính.
-  - Tính tỷ lệ vắng.
-  - Sắp xếp danh sách sinh viên vắng nhiều.
-  - Đọc/ghi file.
-- Kiểm thử:
-  - Bảng test case.
-  - Kết quả chạy thử.
-- Phụ lục code:
-  - Hàm `main`.
-  - Các hàm xử lý nghiệp vụ chính.
-
-## 8. Giả Định Mặc Định
-
-- Chương trình chạy trên console, không làm giao diện đồ họa.
-- Một lớp có nhiều sinh viên.
-- Một sinh viên có thể thuộc nhiều lớp nếu dữ liệu nhập như vậy.
-- Mỗi sinh viên trong một lớp chỉ có một bản ghi điểm danh cho một ngày.
-- Vắng có phép và vắng không phép đều được tính vào tỷ lệ vắng.
-- Dữ liệu được lưu ngay sau khi thêm/sửa để tránh mất dữ liệu.
-
+| File test | Nội dung kiểm tra |
+|-----------|-------------------|
+| `test_linked_list.py` | `addLast`, `remove`, `find`, `get`, `size`; parser `_split_line` |
+| `test_models.py` | Student getter; validation status; guard trùng mã HS; idempotency session; tính tỉ lệ vắng |
+| `test_services.py` | Bubble sort xếp hạng vắng; lọc danh sách cảnh báo >20% |
+| `test_persistence.py` | Round-trip save → load: class, student, schedule, session, attendance |
