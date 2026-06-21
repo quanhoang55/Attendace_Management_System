@@ -109,34 +109,32 @@ classDiagram
         +run()
     }
 
-    %% ─── MyLinkedList internal ───────────────────────────────────────────
-    MyLinkedList *-- Node : head / tail
+    %% ─── MyLinkedList internal structure ────────────────────────────────
+    MyLinkedList *-- Node : stores
     Node --> Node : next
 
-    %% ─── Classes that hold MyLinkedList as attributes (implied by o-- below) ─
+    %% ─── Aggregation: classes that contain elements via MyLinkedList ─────
+    SchoolClass o-- Student : contains
+    SchoolClass o-- Schedule : contains
+    SchoolClass o-- Session : contains
+    Session o-- AttendanceRecord : contains
+    AttendanceManager o-- SchoolClass : manages
 
-    %% ─── Element types stored inside each MyLinkedList ─────────────────
-    SchoolClass o-- Student : studentList chứa
-    SchoolClass o-- Schedule : scheduleList chứa
-    SchoolClass o-- Session : sessionList chứa
-    Session o-- AttendanceRecord : attendanceList chứa
-    AttendanceManager o-- SchoolClass : classList chứa
-
-    %% ─── Classes that only return MyLinkedList (no stored attribute) ─────
+    %% ─── Dependency: classes that return MyLinkedList from methods ───────
     FileManager ..> MyLinkedList : returns
     AttendanceReport ..> MyLinkedList : returns
 
-    %% ─── Object references stored as attributes ─────────────────────────
-    Session --> SchoolClass : school_class
-    AttendanceRecord --> Student : student
-    AbsenceReportItem --> Student : student
-    AttendanceManager --> FileManager : fileManager
-    AttendanceManager --> AttendanceReport : reportGenerator
-    MainProgram --> AttendanceManager : manager
-    MainProgram --> AttendanceReport : report
+    %% ─── Association: direct object references stored as attributes ──────
+    Session --> SchoolClass : belongs to
+    AttendanceRecord --> Student : records for
+    AbsenceReportItem --> Student : summarizes
+    AttendanceManager --> FileManager : persists via
+    AttendanceManager --> AttendanceReport : generates via
+    MainProgram --> AttendanceManager : controls
+    MainProgram --> AttendanceReport : uses
 
-    %% ─── AttendanceStatus usage (dùng trong method, không lưu attribute) ─
-    AttendanceRecord ..> AttendanceStatus : uses
+    %% ─── Dependency: uses AttendanceStatus in method logic ───────────────
+    AttendanceRecord ..> AttendanceStatus : validates with
     Session ..> AttendanceStatus : uses
     SchoolClass ..> AttendanceStatus : uses
     AttendanceReport ..> AttendanceStatus : uses
