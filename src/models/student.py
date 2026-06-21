@@ -18,4 +18,4 @@ class Student_ID:
 @dataclass
 class Student:
     student_id: str
-    full_name: str
+    student_name: str
