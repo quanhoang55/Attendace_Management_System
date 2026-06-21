@@ -16,7 +16,7 @@ _BASE_DIR = os.path.join(
 
 
 class AttendanceManager:
-    """The central facade of the system orchestrating classes, records and I/O.
+    """The central facade of the system orchestrating classes, records, I/O and reports.
 
     Attributes:
         classList (MyLinkedList): List of all SchoolClass objects.
@@ -135,6 +135,39 @@ class AttendanceManager:
                 curr_session_node = curr_session_node.next
             curr_class_node = curr_class_node.next
         return result
+
+    def reportAttendanceBySession(self, session: Session) -> str:
+        """Delegates to reportGenerator to generate a session attendance summary.
+
+        Args:
+            session (Session): The session to report.
+
+        Returns:
+            str: The formatted attendance summary string.
+        """
+        return self.reportGenerator.reportAttendanceBySession(session)
+
+    def getMostAbsentStudents(self, schoolClass: SchoolClass) -> MyLinkedList:
+        """Delegates to reportGenerator to get students sorted by absence count descending.
+
+        Args:
+            schoolClass (SchoolClass): The class to analyze.
+
+        Returns:
+            MyLinkedList: List of AbsenceReportItem sorted by absenceCount descending.
+        """
+        return self.reportGenerator.getMostAbsentStudents(schoolClass)
+
+    def getAbsenceWarningList(self, schoolClass: SchoolClass) -> MyLinkedList:
+        """Delegates to reportGenerator to get students with absence rate above 20%.
+
+        Args:
+            schoolClass (SchoolClass): The class to analyze.
+
+        Returns:
+            MyLinkedList: Filtered list of AbsenceReportItem with absenceRate > 20%.
+        """
+        return self.reportGenerator.getAbsenceWarningList(schoolClass)
 
     @staticmethod
     def split_line(line: str) -> MyLinkedList:

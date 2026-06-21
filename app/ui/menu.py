@@ -3,21 +3,18 @@ from app.models.student import Student
 from app.models.schedule import Schedule
 from app.models.school_class import SchoolClass
 from app.services.attendance_manager import AttendanceManager
-from app.services.report_service import AttendanceReport
 
 
 class MainProgram:
     """The terminal UI presentation class handling the application menu and loop.
 
     Attributes:
-        manager (AttendanceManager): Orchestrates core domain queries and persistence.
-        report (AttendanceReport): Generates stats and sorting lists for outputs.
+        manager (AttendanceManager): Facade orchestrating all domain operations.
     """
 
     def __init__(self):
         """Initializes the MainProgram."""
         self.manager = AttendanceManager()
-        self.report = AttendanceReport()
 
     def showMenu(self):
         """Prints the terminal menu interface choices to standard output."""
@@ -293,7 +290,7 @@ class MainProgram:
                         f"Error: Session on date '{date}' does not exist for class '{classId}'."
                     )
                     return True
-                summary = self.report.reportAttendanceBySession(session)
+                summary = self.manager.reportAttendanceBySession(session)
                 print(summary)
 
             elif choice == 11:
@@ -303,7 +300,7 @@ class MainProgram:
                 if sc is None:
                     print(f"Error: Class with ID '{classId}' does not exist.")
                     return True
-                report_items = self.report.getMostAbsentStudents(sc)
+                report_items = self.manager.getMostAbsentStudents(sc)
                 if report_items.size() == 0:
                     print("No students found in this class.")
                 else:
@@ -328,7 +325,7 @@ class MainProgram:
                 if sc is None:
                     print(f"Error: Class with ID '{classId}' does not exist.")
                     return True
-                warning_items = self.report.getAbsenceWarningList(sc)
+                warning_items = self.manager.getAbsenceWarningList(sc)
                 if warning_items.size() == 0:
                     print("No students are at-risk (>20% absence rate) in this class.")
                 else:

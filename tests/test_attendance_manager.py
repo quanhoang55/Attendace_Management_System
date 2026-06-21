@@ -232,6 +232,93 @@ def test_search_by_student_id_not_found_returns_empty():
         am_module._BASE_DIR = original_base
 
 
+def _make_manager_with_attendance():
+    """Helper: creates a manager with 2 students and attendance data across 5 sessions."""
+    import app.services.attendance_manager as am_module
+    am_module._BASE_DIR = _TEST_DATA_DIR
+
+    manager = AttendanceManager()
+    sc = SchoolClass("CS101", "Computer Science")
+    s1 = Student("ST01", "John Doe")
+    s2 = Student("ST02", "Jane Smith")
+    sc.addStudent(s1)
+    sc.addStudent(s2)
+
+    # 5 sessions: ST01 has 1 absence (20%), ST02 has 3 absences (60%)
+    from app.core.attendaceStatus import AttendanceStatus
+    for date in ["2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05"]:
+        sc.createSession(date)
+
+    sc.findSession("2026-06-01").recordAttendance("ST01", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-02").recordAttendance("ST01", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-03").recordAttendance("ST01", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-04").recordAttendance("ST01", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-05").recordAttendance("ST01", AttendanceStatus.EXCUSED_ABSENCE)
+
+    sc.findSession("2026-06-01").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+    sc.findSession("2026-06-02").recordAttendance("ST02", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-03").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+    sc.findSession("2026-06-04").recordAttendance("ST02", AttendanceStatus.PRESENT)
+    sc.findSession("2026-06-05").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+
+    manager.addClass(sc)
+    return manager, sc
+
+
+def test_report_attendance_by_session_via_manager():
+    print("Testing AttendanceManager.reportAttendanceBySession - delegates correctly...")
+    import app.services.attendance_manager as am_module
+    original_base = am_module._BASE_DIR
+    am_module._BASE_DIR = _TEST_DATA_DIR
+    try:
+        manager, sc = _make_manager_with_attendance()
+        sess = sc.findSession("2026-06-01")
+        report_str = manager.reportAttendanceBySession(sess)
+
+        assert "2026-06-01" in report_str
+        assert "Present Students" in report_str
+        assert "Total Enrolled Students : 2" in report_str
+        print("reportAttendanceBySession via manager - passed!")
+    finally:
+        am_module._BASE_DIR = original_base
+
+
+def test_get_most_absent_students_via_manager():
+    print("Testing AttendanceManager.getMostAbsentStudents - returns sorted by absence count...")
+    import app.services.attendance_manager as am_module
+    original_base = am_module._BASE_DIR
+    am_module._BASE_DIR = _TEST_DATA_DIR
+    try:
+        manager, sc = _make_manager_with_attendance()
+        items = manager.getMostAbsentStudents(sc)
+
+        assert items.size() == 2
+        # ST02 has 3 absences, ST01 has 1 → ST02 should be first
+        assert items.get(0).student.getStudentId() == "ST02"
+        assert items.get(1).student.getStudentId() == "ST01"
+        print("getMostAbsentStudents via manager sorted correctly - passed!")
+    finally:
+        am_module._BASE_DIR = original_base
+
+
+def test_get_absence_warning_list_via_manager():
+    print("Testing AttendanceManager.getAbsenceWarningList - returns only >20% absence rate...")
+    import app.services.attendance_manager as am_module
+    original_base = am_module._BASE_DIR
+    am_module._BASE_DIR = _TEST_DATA_DIR
+    try:
+        manager, sc = _make_manager_with_attendance()
+        warnings = manager.getAbsenceWarningList(sc)
+
+        # ST02: 60% (warning), ST01: 20% (not warning, threshold is strictly >20%)
+        assert warnings.size() == 1
+        assert warnings.get(0).student.getStudentId() == "ST02"
+        assert warnings.get(0).absenceRate > 20.0
+        print("getAbsenceWarningList via manager - passed!")
+    finally:
+        am_module._BASE_DIR = original_base
+
+
 if __name__ == "__main__":
     test_add_class_duplicate_raises()
     test_find_class_by_id_not_found_returns_none()
@@ -245,4 +332,8 @@ if __name__ == "__main__":
     test_search_by_date_not_found_returns_none()
     test_search_by_student_id_cross_class()
     test_search_by_student_id_not_found_returns_empty()
+    test_report_attendance_by_session_via_manager()
+    test_get_most_absent_students_via_manager()
+    test_get_absence_warning_list_via_manager()
     print("All AttendanceManager tests passed!")
+

@@ -96,45 +96,45 @@ classDiagram
         +recordAttendance(classId, date, studentId, status)
         +searchByDate(classId, date) Session
         +searchByStudentId(studentId) MyLinkedList
-        +split_line(line)$ MyLinkedList
+        +reportAttendanceBySession(session) str
+        +getMostAbsentStudents(schoolClass) MyLinkedList
+        +getAbsenceWarningList(schoolClass) MyLinkedList
         +saveData()
         +loadData()
     }
 
     class MainProgram {
         +AttendanceManager manager
-        +AttendanceReport report
         +showMenu()
         +handleChoice(choice) bool
         +run()
     }
 
     %% ─── MyLinkedList internal structure ────────────────────────────────
-    MyLinkedList *-- Node : stores
-    Node --> Node : next
+    MyLinkedList "1" *-- "0..*" Node : stores
 
     %% ─── Aggregation: classes that contain elements via MyLinkedList ─────
-    SchoolClass o-- Student : contains
-    SchoolClass o-- Schedule : contains
-    SchoolClass o-- Session : contains
-    Session o-- AttendanceRecord : contains
-    AttendanceManager o-- SchoolClass : manages
+    SchoolClass "1" o-- "0..*" Student : contains
+    SchoolClass "1" o-- "0..*" Schedule : contains
+    SchoolClass "1" o-- "0..*" Session : contains
+    Session "1" o-- "0..*" AttendanceRecord : contains
+    AttendanceManager "1" o-- "0..*" SchoolClass : manages
 
     %% ─── Dependency: classes that return MyLinkedList from methods ───────
     FileManager ..> MyLinkedList : returns
     AttendanceReport ..> MyLinkedList : returns
 
     %% ─── Association: direct object references stored as attributes ──────
-    Session --> SchoolClass : belongs to
-    AttendanceRecord --> Student : records for
-    AbsenceReportItem --> Student : summarizes
-    AttendanceManager --> FileManager : persists via
-    AttendanceManager --> AttendanceReport : generates via
-    MainProgram --> AttendanceManager : controls
-    MainProgram --> AttendanceReport : uses
+    Session "0..*" --> "1" SchoolClass : belongs to
+    AttendanceRecord "0..*" --> "1" Student : records for
+    AbsenceReportItem "0..*" --> "1" Student : summarizes
+    AttendanceManager "1" --> "1" FileManager : persists via
+    AttendanceManager "1" --> "1" AttendanceReport : generates via
+    MainProgram "1" --> "1" AttendanceManager : controls
 
     %% ─── Dependency: uses AttendanceStatus in method logic ───────────────
     AttendanceRecord ..> AttendanceStatus : validates with
     Session ..> AttendanceStatus : uses
     SchoolClass ..> AttendanceStatus : uses
     AttendanceReport ..> AttendanceStatus : uses
+
