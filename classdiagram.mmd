@@ -70,6 +70,7 @@ classDiagram
         +recordAttendance(classId, date, studentId, status)
         +searchByDate(classId, date) Session
         +searchByStudentId(studentId) MyLinkedList
+        +split_line(line) MyLinkedList
         +saveData()
         +loadData()
     }
@@ -96,17 +97,36 @@ classDiagram
         +run()
     }
 
-    SchoolClass o-- Student : studentList
-    SchoolClass o-- Schedule : scheduleList
-    SchoolClass o-- Session : sessionList
-    Session --> SchoolClass : school_class
-    Session o-- AttendanceRecord : attendanceList
-    AttendanceRecord --> Student : student
+    %% MyLinkedList internal structure
     MyLinkedList *-- Node : head, tail
     Node --> Node : next
-    AttendanceManager o-- SchoolClass : classList
+
+    %% Classes holding MyLinkedList as attributes (association)
+    SchoolClass --> MyLinkedList : studentList
+    SchoolClass --> MyLinkedList : scheduleList
+    SchoolClass --> MyLinkedList : sessionList
+    Session --> MyLinkedList : attendanceList
+    AttendanceManager --> MyLinkedList : classList
+
+    %% Classes returning MyLinkedList from methods (dependency)
+    FileManager ..> MyLinkedList : returns
+    AttendanceReport ..> MyLinkedList : returns
+
+    %% Back-reference: Session knows its parent SchoolClass
+    Session --> SchoolClass : school_class
+
+    %% Direct object references
+    AttendanceRecord --> Student : student
+    AbsenceReportItem --> Student : student
+
+    %% Service-level associations
     AttendanceManager --> FileManager : fileManager
     AttendanceManager --> AttendanceReport : reportGenerator
-    AbsenceReportItem --> Student : student
     MainProgram --> AttendanceManager : manager
     MainProgram --> AttendanceReport : report
+
+    %% AttendanceStatus usage (dependency)
+    AttendanceRecord ..> AttendanceStatus : uses
+    Session ..> AttendanceStatus : uses
+    SchoolClass ..> AttendanceStatus : uses
+    AttendanceReport ..> AttendanceStatus : uses
