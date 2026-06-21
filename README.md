@@ -84,19 +84,19 @@ ktlt_project/
 ### Phân Lớp Hệ Thống
 
 ```
-MainProgram  (UI / menu loop)
+MainProgram  (menu UI)
     │
-AttendanceManager  (Facade / điều phối)
+AttendanceManager  (điều phối)
     │                   └──────────────────────────┐
-SchoolClass                         AttendanceReport   FileManager
+SchoolClass                         (AttendanceReport, FileManager)
     │    └──────────────┐
-Schedule    Session
-                │
-          AttendanceRecord ── AttendanceStatus
-                │
-            Student
+Schedule             Session
+                        │
+                 AttendanceRecord ── AttendanceStatus
+                        │
+                    Student
 
-MyLinkedList<T> + Node<T>  ← dùng xuyên suốt toàn bộ hệ thống
+MyLinkedList<T> + Node<T>  <-> dùng xuyên suốt toàn bộ hệ thống
 ```
 ---
 
@@ -158,7 +158,7 @@ Dữ liệu được lưu dưới dạng văn bản thuần, phân cách bằng 
 
 | Lớp | Vai Trò |
 |-----|---------|
-| `MyLinkedList` | Danh sách liên kết đơn tự cài — cấu trúc dữ liệu duy nhất trong toàn hệ thống |
+| `MyLinkedList` | Danh sách liên kết đơn tự cài - cấu trúc dữ liệu duy nhất trong toàn hệ thống |
 | `Student` | Thông tin học sinh (mã, họ tên) |
 | `Schedule` | Thời khóa biểu (thứ, tiết, phòng) |
 | `AttendanceRecord` | Bản ghi điểm danh của một học sinh trong một buổi |
@@ -180,7 +180,7 @@ ti_le = (so_buoi_vang / tong_so_buoi_co_ghi_nhan) x 100
 - Vắng = `EXCUSED_ABSENCE` hoặc `UNEXCUSED_ABSENCE`
 - Nếu chưa có buổi nào được ghi nhận -> tỉ lệ = `0.0`
 
-**Học sinh có nguy cơ:** tỉ lệ vắng **> 20%**
+**Học sinh có nguy cơ:** tỉ lệ vắng -> 20%**
 
 ---
 
