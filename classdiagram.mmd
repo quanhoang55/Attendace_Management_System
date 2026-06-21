@@ -1,0 +1,115 @@
+classDiagram
+    class Student {
+        +str studentId
+        +str fullName
+        +getStudentId() str
+        +getFullName() str
+    }
+    class Session {
+        +str date
+        +MyLinkedList attendanceList
+        +SchoolClass school_class
+        +recordAttendance(studentId, status)
+        +findAttendance(studentId) AttendanceRecord
+        +countPresent() int
+    }
+    class SchoolClass {
+        +str classId
+        +str className
+        +MyLinkedList studentList
+        +MyLinkedList scheduleList
+        +MyLinkedList sessionList
+        +addStudent(student)
+        +getStudentList() MyLinkedList
+        +addSchedule(schedule)
+        +createSession(date) Session
+        +findSession(date) Session
+        +calculateAbsenceRate(studentId) float
+    }
+    class Schedule {
+        +int dayOfWeek
+        +int period
+        +str room
+    }
+    class AttendanceRecord {
+        +Student student
+        +str status
+        +str classId
+        +str date
+        +getStatus() str
+        +setStatus(status)
+    }
+    class Node {
+        +Any data
+        +Node next
+    }
+    class MyLinkedList {
+        +Node head
+        +Node tail
+        +int _size
+        +addLast(item)
+        +remove(item) bool
+        +find(condition) Any
+        +traverse(action)
+        +size() int
+        +get(index) Any
+    }
+    class AttendanceStatus {
+        +str PRESENT$
+        +str EXCUSED_ABSENCE$
+        +str UNEXCUSED_ABSENCE$
+        +is_valid(value)$ bool
+    }
+    class AttendanceManager {
+        +MyLinkedList classList
+        +FileManager fileManager
+        +AttendanceReport reportGenerator
+        +addClass(schoolClass)
+        +getAllClasses() MyLinkedList
+        +findClassById(classId) SchoolClass
+        +recordAttendance(classId, date, studentId, status)
+        +searchByDate(classId, date) Session
+        +searchByStudentId(studentId) MyLinkedList
+        +split_line(line)$ MyLinkedList
+        +saveData()
+        +loadData()
+    }
+    class FileManager {
+        +readFile(path) MyLinkedList
+        +writeFile(path, content)
+    }
+    class AbsenceReportItem {
+        +Student student
+        +int totalSessions
+        +int absenceCount
+        +float absenceRate
+    }
+    class AttendanceReport {
+        +reportAttendanceBySession(session) str
+        +getMostAbsentStudents(schoolClass) MyLinkedList
+        +getAbsenceWarningList(schoolClass) MyLinkedList
+    }
+    class MainProgram {
+        +AttendanceManager manager
+        +AttendanceReport report
+        +showMenu()
+        -_get_non_empty_input(prompt) str
+        -_get_int_input(prompt, min_val, max_val) int
+        +handleChoice(choice) bool
+        +run()
+    }
+
+    SchoolClass o-- Student : studentList
+    SchoolClass o-- Schedule : scheduleList
+    SchoolClass o-- Session : sessionList
+    Session --> SchoolClass : school_class
+    Session o-- AttendanceRecord : attendanceList
+    AttendanceRecord --> Student : student
+    MyLinkedList *-- Node : head, tail
+    Node --> Node : next
+    AttendanceManager o-- SchoolClass : classList
+    AttendanceManager --> FileManager : fileManager
+    AttendanceManager --> AttendanceReport : reportGenerator
+    AbsenceReportItem --> Student : student
+    MainProgram --> AttendanceManager : manager
+    MainProgram --> AttendanceReport : report
