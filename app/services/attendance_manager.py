@@ -137,7 +137,7 @@ class AttendanceManager:
         return result
 
     @staticmethod
-    def _split_line(line: str) -> MyLinkedList:
+    def split_line(line: str) -> MyLinkedList:
         """Splits a pipe-delimited line into a MyLinkedList of field strings.
 
         Args:
@@ -248,7 +248,7 @@ class AttendanceManager:
         class_lines = self.fileManager.readFile(classes_path)
         curr = class_lines.head
         while curr is not None:
-            fields = self._split_line(curr.data)
+            fields = self.split_line(curr.data)
             if fields.size() >= 2:
                 cid = fields.get(0)
                 cname = fields.get(1)
@@ -264,7 +264,7 @@ class AttendanceManager:
         student_lines = self.fileManager.readFile(students_path)
         curr = student_lines.head
         while curr is not None:
-            fields = self._split_line(curr.data)
+            fields = self.split_line(curr.data)
             if fields.size() >= 3:
                 cid = fields.get(0)
                 sid = fields.get(1)
@@ -282,7 +282,7 @@ class AttendanceManager:
         schedule_lines = self.fileManager.readFile(schedules_path)
         curr = schedule_lines.head
         while curr is not None:
-            fields = self._split_line(curr.data)
+            fields = self.split_line(curr.data)
             if fields.size() >= 4:
                 cid = fields.get(0)
                 day = int(fields.get(1))
@@ -298,7 +298,7 @@ class AttendanceManager:
         session_lines = self.fileManager.readFile(sessions_path)
         curr = session_lines.head
         while curr is not None:
-            fields = self._split_line(curr.data)
+            fields = self.split_line(curr.data)
             if fields.size() >= 2:
                 cid = fields.get(0)
                 date = fields.get(1)
@@ -311,7 +311,7 @@ class AttendanceManager:
         attendance_lines = self.fileManager.readFile(attendance_path)
         curr = attendance_lines.head
         while curr is not None:
-            fields = self._split_line(curr.data)
+            fields = self.split_line(curr.data)
             if fields.size() >= 4:
                 cid = fields.get(0)
                 date = fields.get(1)

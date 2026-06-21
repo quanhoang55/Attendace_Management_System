@@ -38,29 +38,40 @@ ktlt_project/
 │
 ├── app/
 │   ├── core/
-│   │   ├── linked_list.py         # Cấu trúc dữ liệu MyLinkedList (tự cài đặt)
-│   │   └── constants.py           # Hằng số AttendanceStatus
+│   │   ├── linked_list.py         # MyLinkedList
+│   │   └── attendanceStatus.py    # AttendanceStatus
 │   │
 │   ├── models/
-│   │   ├── student.py             # Lớp Student
-│   │   ├── schedule.py            # Lớp Schedule
-│   │   ├── attendance.py          # Lớp AttendanceRecord
-│   │   ├── session.py             # Lớp Session
-│   │   └── school_class.py        # Lớp SchoolClass
+│   │   ├── student.py             # Student
+│   │   ├── schedule.py            # Schedule
+│   │   ├── attendance.py          # AttendanceRecord
+│   │   ├── session.py             # Session
+│   │   └── school_class.py        # SchoolClass
 │   │
 │   ├── services/
 │   │   ├── file_manager.py        # Đọc/ghi file
-│   │   ├── report_service.py      # Tạo báo cáo & AbsenceReportItem
-│   │   └── attendance_manager.py  # Facade điều phối toàn hệ thống
+│   │   ├── report_service.py      # Tạo báo cáo
+│   │   └── attendance_manager.py  # điều phối toàn hệ thống
 │   │
 │   └── ui/
-│       └── menu.py                # Giao diện menu CLI (MainProgram)
+│       └── menu.py                # Giao diện menu CLI
 │
 ├── tests/
-│   ├── test_linked_list.py        # Test MyLinkedList & _split_line
-│   ├── test_models.py             # Test domain models
-│   ├── test_services.py           # Test business logic & sắp xếp
-│   └── test_persistence.py        # Test lưu/tải dữ liệu
+│   ├── test_attendance_manager.py
+│   ├── test_attendance_record.py
+│   ├── test_attendance_status.py
+│   ├── test_file_manager.py
+│   ├── test_linked_list_edge_cases.py
+│   ├── test_linked_list.py
+│   ├── test_menu.py
+│   ├── test_models.py
+│   ├── test_persistence.py
+│   ├── test_report_service.py
+│   ├── test_schedule.py
+│   ├── test_school_class.py
+│   ├── test_services.py
+│   ├── test_session.py
+│   └── test_student.py
 │
 └── data/
     ├── classes.txt
@@ -87,14 +98,6 @@ Schedule    Session
 
 MyLinkedList<T> + Node<T>  ← dùng xuyên suốt toàn bộ hệ thống
 ```
-
----
-
-## ⚙️ Yêu Cầu
-
-- **Python 3.8+**
-- Không cần cài thêm thư viện bên ngoài
-
 ---
 
 ## 🚀 Cách Chạy
@@ -105,11 +108,22 @@ python main.py
 ```
 
 ```bash
-# Chạy test suite
+# Chạy test
+python -m tests.test_attendance_manager
+python -m tests.test_attendance_record
+python -m tests.test_attendance_status
+python -m tests.test_file_manager
+python -m tests.test_linked_list_edge_cases
 python -m tests.test_linked_list
+python -m tests.test_menu
 python -m tests.test_models
-python -m tests.test_services
 python -m tests.test_persistence
+python -m tests.test_report_service
+python -m tests.test_schedule
+python -m tests.test_school_class
+python -m tests.test_services
+python -m tests.test_session
+python -m tests.test_student
 ```
 
 ---
@@ -130,13 +144,12 @@ Dữ liệu được lưu dưới dạng văn bản thuần, phân cách bằng 
 
 ---
 
-## 📐 Ràng Buộc Kỹ Thuật
+## 📐 Yêu Cầu Về Project
 
 Đây là project học thuật với các ràng buộc bắt buộc:
 
-- **Không** dùng `list`, `dict`, `set`, `tuple`, hay bất kỳ collection nào của Python cho dữ liệu ứng dụng — chỉ dùng `MyLinkedList<T>`.
-- **Không** dùng hàm sort/search có sẵn (`sorted()`, `.sort()`, `.find()`, v.v.) — tất cả tìm kiếm và sắp xếp đều được viết tay, duyệt node-by-node.
-- **Không** dùng `str.split()` hay bất kỳ hàm tách chuỗi nào để parse file — sử dụng parser thủ công ký tự-by-ký tự (`_split_line`).
+- Không được dùng `list`, `dict`, `set`, `tuple`, hay bất kỳ collection nào của Python cho dữ liệu ứng dụng
+- Không dùng hàm sort/search có sẵn (`sorted()`, `.sort()`, `.find()`, v.v.)
 - Sắp xếp danh sách vắng nhiều nhất: **Bubble Sort** thủ công trên các node của `MyLinkedList`.
 
 ---
@@ -165,7 +178,7 @@ Dữ liệu được lưu dưới dạng văn bản thuần, phân cách bằng 
 ti_le = (so_buoi_vang / tong_so_buoi_co_ghi_nhan) x 100
 ```
 - Vắng = `EXCUSED_ABSENCE` hoặc `UNEXCUSED_ABSENCE`
-- Nếu chưa có buổi nào được ghi nhận → tỉ lệ = `0.0`
+- Nếu chưa có buổi nào được ghi nhận -> tỉ lệ = `0.0`
 
 **Học sinh có nguy cơ:** tỉ lệ vắng **> 20%**
 
@@ -178,4 +191,4 @@ ti_le = (so_buoi_vang / tong_so_buoi_co_ghi_nhan) x 100
 | `test_linked_list.py` | `addLast`, `remove`, `find`, `get`, `size`; parser `_split_line` |
 | `test_models.py` | Student getter; validation status; guard trùng mã HS; idempotency session; tính tỉ lệ vắng |
 | `test_services.py` | Bubble sort xếp hạng vắng; lọc danh sách cảnh báo >20% |
-| `test_persistence.py` | Round-trip save → load: class, student, schedule, session, attendance |
+| `test_persistence.py` | Round-trip save -> load: class, student, schedule, session, attendance |

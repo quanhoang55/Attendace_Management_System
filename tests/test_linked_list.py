@@ -47,7 +47,8 @@ def test_linked_list():
 def test_split_line():
     print("Testing _split_line (pipe delimiter)...")
     from app.services.attendance_manager import AttendanceManager
-    split = AttendanceManager._split_line
+
+    split = AttendanceManager.split_line
 
     res = split("CS101|Introduction to Programming|A101")
     assert res.size() == 3
