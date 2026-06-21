@@ -1,0 +1,142 @@
+HƯỚNG DẪN CHẠY UNIT TEST
+========================================
+
+Yêu cầu: Python 3.x đã được cài đặt trên máy.
+
+
+1. CÀI ĐẶT THƯ VIỆN PYTEST
+----------------------------------------
+Mở terminal (PowerShell hoặc Command Prompt) tại thư mục gốc của dự án
+(D:\Attendace_Management_System), sau đó chạy:
+
+    pip install pytest
+
+
+2. CHẠY TOÀN BỘ TEST
+----------------------------------------
+Chạy tất cả test trong thư mục tests/:
+
+    python -m pytest tests/ -v
+
+Tùy chọn:
+  -v          : Hiển thị tên từng test case (verbose)
+  --tb=short  : Hiển thị traceback ngắn gọn khi test thất bại
+  -q          : Chế độ im lặng, chỉ hiện tổng kết
+
+
+3. CHẠY TỪNG FILE TEST RIÊNG LẺ
+----------------------------------------
+Cú pháp: python -m pytest tests/<tên_file>.py -v
+
+Danh sách file test:
+
+  [Core - Cấu trúc dữ liệu]
+    python -m pytest tests/test_linked_list.py -v
+        --> Kiểm tra các thao tác cơ bản của MyLinkedList
+            (addLast, get, find, remove, _split_line)
+
+    python -m pytest tests/test_linked_list_edge_cases.py -v
+        --> Kiểm tra các trường hợp biên của MyLinkedList
+            (traverse, remove với predicate, get ngoài biên, find không tìm thấy)
+
+  [Core - Trạng thái điểm danh]
+    python -m pytest tests/test_attendance_status.py -v
+        --> Kiểm tra AttendanceStatus.is_valid() và các hằng số
+
+  [Models - Dữ liệu]
+    python -m pytest tests/test_models.py -v
+        --> Kiểm tra các ca cơ bản của Student, AttendanceRecord, SchoolClass
+
+    python -m pytest tests/test_student.py -v
+        --> Kiểm tra Student (getStudentId, getFullName, attributes, nhiều instance)
+
+    python -m pytest tests/test_attendance_record.py -v
+        --> Kiểm tra AttendanceRecord (getStatus, setStatus, lỗi invalid status,
+            student reference, helper attributes classId và date)
+
+    python -m pytest tests/test_schedule.py -v
+        --> Kiểm tra Schedule (thuộc tính dayOfWeek, period, room)
+
+    python -m pytest tests/test_school_class.py -v
+        --> Kiểm tra SchoolClass mở rộng (addSchedule, getStudentList,
+            findSession, calculateAbsenceRate các trường hợp biên)
+
+    python -m pytest tests/test_session.py -v
+        --> Kiểm tra Session (recordAttendance, findAttendance, countPresent,
+            các lỗi ValueError)
+
+  [Services - Nghiệp vụ]
+    python -m pytest tests/test_services.py -v
+        --> Kiểm tra AttendanceReport: cảnh báo vắng > 20%, sắp xếp nhiều nhất
+
+    python -m pytest tests/test_report_service.py -v
+        --> Kiểm tra AttendanceReport.reportAttendanceBySession: đếm sĩ số
+
+    python -m pytest tests/test_attendance_manager.py -v
+        --> Kiểm tra AttendanceManager: addClass, findClassById,
+            recordAttendance, searchByDate, searchByStudentId
+
+  [Persistence - Lưu trữ file]
+    python -m pytest tests/test_persistence.py -v
+        --> Kiểm tra save/load round-trip toàn bộ dữ liệu
+
+    python -m pytest tests/test_file_manager.py -v
+        --> Kiểm tra FileManager: đọc/ghi file, tạo thư mục, xử lý dòng rỗng
+
+  [UI - Giao diện dòng lệnh]
+    python -m pytest tests/test_menu.py -v
+        --> Kiểm tra _get_non_empty_input (từ chối rỗng/khoảng trắng, retry)
+            và _get_int_input (validate số nguyên, giới hạn min/max)
+            Dùng unittest.mock.patch để giả lập bàn phím không cần nhập tay.
+
+
+4. CHẠY MỘT TEST CỤ THỂ
+----------------------------------------
+Cú pháp: python -m pytest tests/<file>.py::<tên_hàm> -v
+
+Ví dụ:
+    python -m pytest tests/test_session.py::test_record_attendance_duplicate_raises -v
+    python -m pytest tests/test_attendance_manager.py::test_search_by_student_id_cross_class -v
+
+
+5. XEM THỐNG KÊ COVERAGE (TÙY CHỌN)
+----------------------------------------
+Cài thêm plugin coverage:
+
+    pip install pytest-cov
+
+Sau đó chạy:
+
+    python -m pytest tests/ --cov=app --cov-report=term-missing
+
+Kết quả sẽ hiện % coverage cho từng module trong thư mục app/.
+
+
+6. TỔNG HỢP CÁC FILE TEST
+----------------------------------------
+Thư mục tests/ bao gồm 14 file, 91 test case:
+
+  test_linked_list.py              -  2 test cases
+  test_linked_list_edge_cases.py   - 10 test cases
+  test_attendance_status.py        -  5 test cases
+  test_models.py                   -  5 test cases
+  test_student.py                  -  5 test cases
+  test_attendance_record.py        -  9 test cases
+  test_schedule.py                 -  3 test cases
+  test_school_class.py             -  7 test cases
+  test_session.py                  -  9 test cases
+  test_services.py                 -  1 test case
+  test_report_service.py           -  5 test cases
+  test_attendance_manager.py       - 12 test cases
+  test_persistence.py              -  1 test case
+  test_file_manager.py             -  6 test cases
+  test_menu.py                     - 11 test cases
+  -----------------------------------------------
+  TỔNG CỘNG                        - 91 test cases
+
+Lưu ý:
+  - Các test có liên quan đến file (test_persistence.py, test_file_manager.py,
+    test_attendance_manager.py) sẽ tự động tạo và xóa thư mục tạm sau khi chạy.
+    Không cần thao tác thủ công gì thêm.
+  - Không chạy test trong thư mục gốc của Python hay ngoài thư mục dự án.
+  - Luôn chạy lệnh từ thư mục gốc dự án (D:\Attendace_Management_System).
