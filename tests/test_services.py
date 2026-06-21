@@ -1,9 +1,16 @@
-"""Tests for AttendanceReport service: sorting and warning list logic."""
-
+# ==========================================================================
+# Purpose: Tests for AttendanceReport service: sorting and warning list logic.
+# ==========================================================================
+# IMPORTS & MODULE LOADING
+# ==========================================================================
 from app.core.attendaceStatus import AttendanceStatus
 from app.models.student import Student
 from app.models.school_class import SchoolClass
 from app.services.report_service import AttendanceReport
+
+# ==========================================================================
+# CORE LOGIC & FUNCTIONS
+# ==========================================================================
 
 
 def test_business_rules_and_sorting():
@@ -67,6 +74,9 @@ def test_business_rules_and_sorting():
     print("Business rules & sorting tests passed!")
 
 
+# ==========================================================================
+# MAIN EXECUTION ENTRYPOINT
+# ==========================================================================
 if __name__ == "__main__":
     test_business_rules_and_sorting()
     print("All service tests passed!")

@@ -1,7 +1,14 @@
-"""Entry point for the Attendance Management System."""
+# ==========================================================================
+# Purpose: Entry point for the Attendance Management System.
+# ==========================================================================
+# IMPORTS & MODULE LOADING
+# ==========================================================================
 
 from app.ui.menu import MainProgram
 
+# ==========================================================================
+# MAIN EXECUTION ENTRYPOINT
+# ==========================================================================
 if __name__ == "__main__":
     app = MainProgram()
     app.run()
