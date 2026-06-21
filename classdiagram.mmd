@@ -113,12 +113,7 @@ classDiagram
     MyLinkedList *-- Node : head / tail
     Node --> Node : next
 
-    %% ─── Classes that hold a MyLinkedList as an attribute ───────────────
-    SchoolClass --> MyLinkedList : studentList
-    SchoolClass --> MyLinkedList : scheduleList
-    SchoolClass --> MyLinkedList : sessionList
-    Session --> MyLinkedList : attendanceList
-    AttendanceManager --> MyLinkedList : classList
+    %% ─── Classes that hold MyLinkedList as attributes (implied by o-- below) ─
 
     %% ─── Element types stored inside each MyLinkedList ─────────────────
     SchoolClass o-- Student : studentList chứa
