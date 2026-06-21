@@ -5,6 +5,46 @@ classDiagram
         +getStudentId() str
         +getFullName() str
     }
+
+    class Schedule {
+        +int dayOfWeek
+        +int period
+        +str room
+    }
+
+    class AttendanceStatus {
+        +str PRESENT$
+        +str EXCUSED_ABSENCE$
+        +str UNEXCUSED_ABSENCE$
+        +is_valid(value)$ bool
+    }
+
+    class Node {
+        +Any data
+        +Node next
+    }
+
+    class MyLinkedList {
+        +Node head
+        +Node tail
+        -int _size
+        +addLast(item)
+        +remove(item) bool
+        +find(condition) Any
+        +traverse(action)
+        +size() int
+        +get(index) Any
+    }
+
+    class AttendanceRecord {
+        +Student student
+        +str status
+        +str classId
+        +str date
+        +getStatus() str
+        +setStatus(status)
+    }
+
     class Session {
         +str date
         +MyLinkedList attendanceList
@@ -13,6 +53,7 @@ classDiagram
         +findAttendance(studentId) AttendanceRecord
         +countPresent() int
     }
+
     class SchoolClass {
         +str classId
         +str className
@@ -26,40 +67,25 @@ classDiagram
         +findSession(date) Session
         +calculateAbsenceRate(studentId) float
     }
-    class Schedule {
-        +int dayOfWeek
-        +int period
-        +str room
-    }
-    class AttendanceRecord {
+
+    class AbsenceReportItem {
         +Student student
-        +str status
-        +str classId
-        +str date
-        +getStatus() str
-        +setStatus(status)
+        +int totalSessions
+        +int absenceCount
+        +float absenceRate
     }
-    class Node {
-        +Any data
-        +Node next
+
+    class AttendanceReport {
+        +reportAttendanceBySession(session) str
+        +getMostAbsentStudents(schoolClass) MyLinkedList
+        +getAbsenceWarningList(schoolClass) MyLinkedList
     }
-    class MyLinkedList {
-        +Node head
-        +Node tail
-        +int _size
-        +addLast(item)
-        +remove(item) bool
-        +find(condition) Any
-        +traverse(action)
-        +size() int
-        +get(index) Any
+
+    class FileManager {
+        +readFile(path) MyLinkedList
+        +writeFile(path, content)
     }
-    class AttendanceStatus {
-        +str PRESENT$
-        +str EXCUSED_ABSENCE$
-        +str UNEXCUSED_ABSENCE$
-        +is_valid(value)$ bool
-    }
+
     class AttendanceManager {
         +MyLinkedList classList
         +FileManager fileManager
@@ -70,25 +96,11 @@ classDiagram
         +recordAttendance(classId, date, studentId, status)
         +searchByDate(classId, date) Session
         +searchByStudentId(studentId) MyLinkedList
-        +split_line(line) MyLinkedList
+        +split_line(line)$ MyLinkedList
         +saveData()
         +loadData()
     }
-    class FileManager {
-        +readFile(path) MyLinkedList
-        +writeFile(path, content)
-    }
-    class AbsenceReportItem {
-        +Student student
-        +int totalSessions
-        +int absenceCount
-        +float absenceRate
-    }
-    class AttendanceReport {
-        +reportAttendanceBySession(session) str
-        +getMostAbsentStudents(schoolClass) MyLinkedList
-        +getAbsenceWarningList(schoolClass) MyLinkedList
-    }
+
     class MainProgram {
         +AttendanceManager manager
         +AttendanceReport report
@@ -97,35 +109,38 @@ classDiagram
         +run()
     }
 
-    %% MyLinkedList internal structure
-    MyLinkedList *-- Node : head, tail
+    %% ─── MyLinkedList internal ───────────────────────────────────────────
+    MyLinkedList *-- Node : head / tail
     Node --> Node : next
 
-    %% Classes holding MyLinkedList as attributes (association)
+    %% ─── Classes that hold a MyLinkedList as an attribute ───────────────
     SchoolClass --> MyLinkedList : studentList
     SchoolClass --> MyLinkedList : scheduleList
     SchoolClass --> MyLinkedList : sessionList
     Session --> MyLinkedList : attendanceList
     AttendanceManager --> MyLinkedList : classList
 
-    %% Classes returning MyLinkedList from methods (dependency)
+    %% ─── Element types stored inside each MyLinkedList ─────────────────
+    SchoolClass o-- Student : studentList chứa
+    SchoolClass o-- Schedule : scheduleList chứa
+    SchoolClass o-- Session : sessionList chứa
+    Session o-- AttendanceRecord : attendanceList chứa
+    AttendanceManager o-- SchoolClass : classList chứa
+
+    %% ─── Classes that only return MyLinkedList (no stored attribute) ─────
     FileManager ..> MyLinkedList : returns
     AttendanceReport ..> MyLinkedList : returns
 
-    %% Back-reference: Session knows its parent SchoolClass
+    %% ─── Object references stored as attributes ─────────────────────────
     Session --> SchoolClass : school_class
-
-    %% Direct object references
     AttendanceRecord --> Student : student
     AbsenceReportItem --> Student : student
-
-    %% Service-level associations
     AttendanceManager --> FileManager : fileManager
     AttendanceManager --> AttendanceReport : reportGenerator
     MainProgram --> AttendanceManager : manager
     MainProgram --> AttendanceReport : report
 
-    %% AttendanceStatus usage (dependency)
+    %% ─── AttendanceStatus usage (dùng trong method, không lưu attribute) ─
     AttendanceRecord ..> AttendanceStatus : uses
     Session ..> AttendanceStatus : uses
     SchoolClass ..> AttendanceStatus : uses
