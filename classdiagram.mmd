@@ -70,7 +70,6 @@ classDiagram
         +recordAttendance(classId, date, studentId, status)
         +searchByDate(classId, date) Session
         +searchByStudentId(studentId) MyLinkedList
-        +split_line(line)$ MyLinkedList
         +saveData()
         +loadData()
     }
@@ -93,8 +92,6 @@ classDiagram
         +AttendanceManager manager
         +AttendanceReport report
         +showMenu()
-        -_get_non_empty_input(prompt) str
-        -_get_int_input(prompt, min_val, max_val) int
         +handleChoice(choice) bool
         +run()
     }
