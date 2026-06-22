@@ -70,6 +70,7 @@ class SchoolClass:
             print(
                 f"Warning: Class {self.classId} already has schedule on day {schedule.dayOfWeek}, period {schedule.period}, room {schedule.room}."
             )
+            return
         self.scheduleList.addLast(schedule)
 
     def createSession(self, date: str) -> Session:
