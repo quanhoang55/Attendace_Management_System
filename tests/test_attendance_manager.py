@@ -17,6 +17,7 @@ _TEST_DATA_DIR = os.path.join(
 def _make_manager_with_class():
     """Helper: creates an AttendanceManager with one class and one student."""
     import app.services.attendance_manager as am_module
+
     am_module._BASE_DIR = _TEST_DATA_DIR
 
     manager = AttendanceManager()
@@ -27,8 +28,11 @@ def _make_manager_with_class():
 
 
 def test_add_class_duplicate_raises():
-    print("Testing AttendanceManager.addClass - duplicate class ID raises ValueError...")
+    print(
+        "Testing AttendanceManager.addClass - duplicate class ID raises ValueError..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -49,6 +53,7 @@ def test_add_class_duplicate_raises():
 def test_find_class_by_id_not_found_returns_none():
     print("Testing AttendanceManager.findClassById - not found returns None...")
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -63,6 +68,7 @@ def test_find_class_by_id_not_found_returns_none():
 def test_find_class_by_id_found():
     print("Testing AttendanceManager.findClassById - found...")
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -78,6 +84,7 @@ def test_find_class_by_id_found():
 def test_get_all_classes_returns_all():
     print("Testing AttendanceManager.getAllClasses - returns full list...")
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -92,14 +99,19 @@ def test_get_all_classes_returns_all():
 
 
 def test_record_attendance_class_not_found_raises():
-    print("Testing AttendanceManager.recordAttendance - class not found raises ValueError...")
+    print(
+        "Testing AttendanceManager.recordAttendance - class not found raises ValueError..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
         manager = AttendanceManager()
         try:
-            manager.recordAttendance("NONEXISTENT", "2026-06-01", "ST01", AttendanceStatus.PRESENT)
+            manager.recordAttendance(
+                "NONEXISTENT", "2026-06-01", "ST01", AttendanceStatus.PRESENT
+            )
             assert False, "Should have raised ValueError"
         except ValueError:
             pass
@@ -109,14 +121,19 @@ def test_record_attendance_class_not_found_raises():
 
 
 def test_record_attendance_student_not_found_raises():
-    print("Testing AttendanceManager.recordAttendance - student not found raises ValueError...")
+    print(
+        "Testing AttendanceManager.recordAttendance - student not found raises ValueError..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
         manager = _make_manager_with_class()
         try:
-            manager.recordAttendance("CS101", "2026-06-01", "ST99", AttendanceStatus.PRESENT)
+            manager.recordAttendance(
+                "CS101", "2026-06-01", "ST99", AttendanceStatus.PRESENT
+            )
             assert False, "Should have raised ValueError"
         except ValueError:
             pass
@@ -126,13 +143,18 @@ def test_record_attendance_student_not_found_raises():
 
 
 def test_record_attendance_creates_session_if_missing():
-    print("Testing AttendanceManager.recordAttendance - creates session if not exists...")
+    print(
+        "Testing AttendanceManager.recordAttendance - creates session if not exists..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
         manager = _make_manager_with_class()
-        manager.recordAttendance("CS101", "2026-06-01", "ST01", AttendanceStatus.PRESENT)
+        manager.recordAttendance(
+            "CS101", "2026-06-01", "ST01", AttendanceStatus.PRESENT
+        )
         sc = manager.findClassById("CS101")
         sess = sc.findSession("2026-06-01")
         assert sess is not None
@@ -143,8 +165,11 @@ def test_record_attendance_creates_session_if_missing():
 
 
 def test_search_by_date_class_not_found_raises():
-    print("Testing AttendanceManager.searchByDate - class not found raises ValueError...")
+    print(
+        "Testing AttendanceManager.searchByDate - class not found raises ValueError..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -162,6 +187,7 @@ def test_search_by_date_class_not_found_raises():
 def test_search_by_date_found():
     print("Testing AttendanceManager.searchByDate - returns correct session...")
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -179,6 +205,7 @@ def test_search_by_date_found():
 def test_search_by_date_not_found_returns_none():
     print("Testing AttendanceManager.searchByDate - date not found returns None...")
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -191,8 +218,11 @@ def test_search_by_date_not_found_returns_none():
 
 
 def test_search_by_student_id_cross_class():
-    print("Testing AttendanceManager.searchByStudentId - collects records across classes...")
+    print(
+        "Testing AttendanceManager.searchByStudentId - collects records across classes..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -219,8 +249,11 @@ def test_search_by_student_id_cross_class():
 
 
 def test_search_by_student_id_not_found_returns_empty():
-    print("Testing AttendanceManager.searchByStudentId - not found returns empty list...")
+    print(
+        "Testing AttendanceManager.searchByStudentId - not found returns empty list..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -235,6 +268,7 @@ def test_search_by_student_id_not_found_returns_empty():
 def _make_manager_with_attendance():
     """Helper: creates a manager with 2 students and attendance data across 5 sessions."""
     import app.services.attendance_manager as am_module
+
     am_module._BASE_DIR = _TEST_DATA_DIR
 
     manager = AttendanceManager()
@@ -246,6 +280,7 @@ def _make_manager_with_attendance():
 
     # 5 sessions: ST01 has 1 absence (20%), ST02 has 3 absences (60%)
     from app.core.attendaceStatus import AttendanceStatus
+
     for date in ["2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05"]:
         sc.createSession(date)
 
@@ -253,21 +288,32 @@ def _make_manager_with_attendance():
     sc.findSession("2026-06-02").recordAttendance("ST01", AttendanceStatus.PRESENT)
     sc.findSession("2026-06-03").recordAttendance("ST01", AttendanceStatus.PRESENT)
     sc.findSession("2026-06-04").recordAttendance("ST01", AttendanceStatus.PRESENT)
-    sc.findSession("2026-06-05").recordAttendance("ST01", AttendanceStatus.EXCUSED_ABSENCE)
+    sc.findSession("2026-06-05").recordAttendance(
+        "ST01", AttendanceStatus.EXCUSED_ABSENCE
+    )
 
-    sc.findSession("2026-06-01").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+    sc.findSession("2026-06-01").recordAttendance(
+        "ST02", AttendanceStatus.UNEXCUSED_ABSENCE
+    )
     sc.findSession("2026-06-02").recordAttendance("ST02", AttendanceStatus.PRESENT)
-    sc.findSession("2026-06-03").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+    sc.findSession("2026-06-03").recordAttendance(
+        "ST02", AttendanceStatus.UNEXCUSED_ABSENCE
+    )
     sc.findSession("2026-06-04").recordAttendance("ST02", AttendanceStatus.PRESENT)
-    sc.findSession("2026-06-05").recordAttendance("ST02", AttendanceStatus.UNEXCUSED_ABSENCE)
+    sc.findSession("2026-06-05").recordAttendance(
+        "ST02", AttendanceStatus.UNEXCUSED_ABSENCE
+    )
 
     manager.addClass(sc)
     return manager, sc
 
 
 def test_report_attendance_by_session_via_manager():
-    print("Testing AttendanceManager.reportAttendanceBySession - delegates correctly...")
+    print(
+        "Testing AttendanceManager.reportAttendanceBySession - delegates correctly..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -284,8 +330,11 @@ def test_report_attendance_by_session_via_manager():
 
 
 def test_get_most_absent_students_via_manager():
-    print("Testing AttendanceManager.getMostAbsentStudents - returns sorted by absence count...")
+    print(
+        "Testing AttendanceManager.getMostAbsentStudents - returns sorted by absence count..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -302,8 +351,11 @@ def test_get_most_absent_students_via_manager():
 
 
 def test_get_absence_warning_list_via_manager():
-    print("Testing AttendanceManager.getAbsenceWarningList - returns only >20% absence rate...")
+    print(
+        "Testing AttendanceManager.getAbsenceWarningList - returns only >20% absence rate..."
+    )
     import app.services.attendance_manager as am_module
+
     original_base = am_module._BASE_DIR
     am_module._BASE_DIR = _TEST_DATA_DIR
     try:
@@ -319,7 +371,21 @@ def test_get_absence_warning_list_via_manager():
         am_module._BASE_DIR = original_base
 
 
+def test_split_line():
+    print("Testing _split_line (pipe delimiter)...")
+
+    split = AttendanceManager.split_line
+
+    res = split("CS101|Introduction to Programming|A101")
+    assert res.size() == 3
+    assert res.get(0) == "CS101"
+    assert res.get(1) == "Introduction to Programming"
+    assert res.get(2) == "A101"
+    print("_split_line tests passed!")
+
+
 if __name__ == "__main__":
+    test_split_line()
     test_add_class_duplicate_raises()
     test_find_class_by_id_not_found_returns_none()
     test_find_class_by_id_found()
@@ -336,4 +402,3 @@ if __name__ == "__main__":
     test_get_most_absent_students_via_manager()
     test_get_absence_warning_list_via_manager()
     print("All AttendanceManager tests passed!")
-

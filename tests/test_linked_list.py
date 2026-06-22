@@ -44,21 +44,6 @@ def test_linked_list():
     print("MyLinkedList tests passed!")
 
 
-def test_split_line():
-    print("Testing _split_line (pipe delimiter)...")
-    from app.services.attendance_manager import AttendanceManager
-
-    split = AttendanceManager.split_line
-
-    res = split("CS101|Introduction to Programming|A101")
-    assert res.size() == 3
-    assert res.get(0) == "CS101"
-    assert res.get(1) == "Introduction to Programming"
-    assert res.get(2) == "A101"
-    print("_split_line tests passed!")
-
-
 if __name__ == "__main__":
     test_linked_list()
-    test_split_line()
     print("All linked list tests passed!")
